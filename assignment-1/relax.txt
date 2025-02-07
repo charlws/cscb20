@@ -1,0 +1,61 @@
+group: b20a1
+
+Buildings = {  
+  building_id:number, name:string, address:string, city:string, height:number  
+  1, "Empire State Building", "350 5th Ave", "New York", 381.0  
+  2, "Willis Tower", "233 S Wacker Dr", "Chicago", 442.0  
+}  
+
+Rooms = {  
+  room_id:number, building_id:number, floor:number, capacity:number  
+  101, 1, 10, 50  
+  202, 2, 20, 100  
+}  
+
+Sensors = {  
+  sensor_id:number, room_id:number, type:string, status:string  
+  1, 101, "Temperature", "active"  
+  2, 202, "Smoke", "inactive"  
+}  
+
+Readings = {
+  reading_id:number, sensor_id:number, timestamp:date, value:number  
+  1001, 1, 2022-09-27, 22.5  
+  1002, 2, 2022-09-27, 0.0  
+}  
+
+Maintenance = {  
+  maintenance_id:number, building_id:number, date:date, description:string  
+  5001, 1, 2025-01-15, "Elevator repair"  
+  5002, 2, 2025-01-20, "HVAC maintenance"  
+}  
+
+Suppliers = {  
+  supplier_id:number, name:string, city:string  
+  3001, "ABC Supplies", "New York"  
+  3002, "Windy City Resources", "Chicago"  
+}  
+
+Supplies = {  
+  supply_id:number, supplier_id:number, building_id:number, cost:number  
+  4001, 3001, 1, 5000.0  
+  4002, 3002, 2, 7500.0  
+}  
+
+Tasks = {  
+  task_id:number, building_id:number, task_type:string, priority:string  
+  6001, 1, "Inspection", "High"  
+  6002, 2, "Cleaning", "Medium"  
+}  
+
+Personnel = {  
+  person_id:number, name:string, role:string, contact:string  
+  7001, "John Doe", "Technician", "555-1234"  
+  7002, "Jane Smith", "Manager", "555-5678"  
+}  
+
+PersonnelAssignment = {  
+  person_id:number, maintenance_id:number  
+  7001, 5001  
+  7002, 5002  
+}

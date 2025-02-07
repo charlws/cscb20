@@ -1,0 +1,44 @@
+1.	
+π Buildings.name σ Sensors.status = 'active' (Buildings ⨝ Rooms ⨝ Sensors)
+
+2.	
+π building_id (Rooms ÷ { floor:number  
+  1  
+  2  
+  3  
+  4  
+  5  
+  6  
+  7  
+  8  
+  9  
+  10  
+})
+
+3.
+π building_id (Tasks ÷ { priority:string
+	'High'
+	'Medium'
+	'Low'
+})
+
+4.
+RoomWithoutSensor = π Buildings.building_id, Buildings.name, Rooms.room_id (Buildings ⨝ Rooms) - π Buildings.building_id, Buildings.name, Rooms.room_id (Buildings ⨝ Rooms ⨝ Sensors)
+
+BuildingsWithFullSensor = π Buildings.name, Buildings.building_id Buildings - π Buildings.name, Buildings.building_id RoomWithoutSensor
+
+π Buildings.name σ Buildings.building_id >= 1 and Buildings.building_id <= 3 BuildingsWithFullSensor
+
+5.
+AllBuildingIds = π building_id σ city = 'Toronto' Buildings
+
+AllSuppliers = π Suppliers.supplier_id, Supplies.building_id (Suppliers ⨝ Supplies)
+
+AllSuppliers ÷ AllBuildingIds
+
+6.
+AllBuildingIds = π building_id σ Tasks.priority = 'High' (Buildings ⨝ Tasks)
+
+AllSuppliers = π Suppliers.name, Supplies.building_id (Suppliers ⨝ Supplies)
+
+AllSuppliers ÷ AllBuildingIds
