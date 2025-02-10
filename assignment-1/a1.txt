@@ -15,7 +15,6 @@
   10  
 })
 
-3.
 π building_id (Tasks ÷ { priority:string
 	'High'
 	'Medium'
@@ -42,3 +41,60 @@ AllBuildingIds = π building_id σ Tasks.priority = 'High' (Buildings ⨝ Tasks)
 AllSuppliers = π Suppliers.name, Supplies.building_id (Suppliers ⨝ Supplies)
 
 AllSuppliers ÷ AllBuildingIds
+
+7. 
+π Sensors.room_id 
+((ρ Sensors1 (Sensors)) ⨝ Sensors1.type≠Sensors.type (Sensors))
+
+8.
+ BuildingsWithInactiveSensors = 
+π building_id, reading_month 
+σ status = 'inactive' 
+(Buildings ⨝ Rooms ⨝ Sensors ⨝ Readings)
+
+BuildingsWithMaintenance = 
+π building_id, maintenance_month 
+(Maintenance)
+
+π building_id 
+σ reading_month=maintenance_month
+(BuildingsWithInactiveSensors ⨝ BuildingsWithMaintenance)
+
+9.
+Toronto_room=
+π room_id, capacity
+σ city='Toronto'
+(Buildings⨝Rooms)
+
+π R1.room_id, R2.room_id 
+(ρ R1 (Toronto_room) ⨝ R1.room_id < R2.room_id ∧ (R1.capacity + R2.capacity) > 500 (ρ R2 (Toronto_room)))
+
+10. 
+AllFloors = 
+π floor (Rooms)
+
+BuildingSensorFloors = 
+π building_id, floor (Rooms ⨝ Sensors)
+
+ValidBuildings = 
+π building_id, height (Buildings ⨝ (BuildingSensorFloors ÷ AllFloors))
+
+π building_id (ValidBuildings) -
+π S1.building_id
+((ρ S1 ValidBuildings) ⨝ S1.height < S2.height (ρ S2 ValidBuildings))
+
+11. 
+MySuppliers = Suppliers ⨝ Suppliers.city = Buildings.city Buildings
+
+FilteredBuildings = MySuppliers ⨝ Buildings.building_id = Tasks.building_id ∧ Tasks.priority = 'High' Tasks
+
+LotsOfInfo = ((Personnel ⨝ Personnel.person_id = PersonnelAssignment.person_id PersonnelAssignment) ⨝ PersonnelAssignment.maintenance_id = Maintenance.maintenance_id Maintenance)
+
+π Personnel.name (LotsOfInfo ⨝ Maintenance.building_id = Buildings.building_id FilteredBuildings)
+
+12.
+SensorBuildings = Buildings ⨝ Buildings.building_id = Rooms.building_id Rooms ⨝ Rooms.room_id = Sensors.room_id Sensors ⨝ Sensors.sensor_id = Readings.sensor_id ∧ value > 75 ∧ timestamp > DATE('2024-10-23') Readings
+
+MaintenanceBuildings = SensorBuildings ⨝ Buildings.building_id = Maintenance.building_id ∧ timestamp > DATE('2024-10-23') Maintenance
+
+π Buildings.building_id (MaintenanceBuildings ⨝ s1.building_id = Buildings.building_id (ρ s1 (Suppliers ⨝ Supplies)) ⨝ s2.city != s1.city ∧ s2.building_id = Buildings.building_id (ρ s2 (Suppliers ⨝ Supplies)))
