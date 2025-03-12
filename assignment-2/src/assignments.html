@@ -17,7 +17,7 @@
             const themeToggle = document.getElementById('theme-toggle');
 
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' || savedTheme === null) {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 themeToggle.checked = true;
             }
@@ -39,7 +39,7 @@
     <header>
         <div class="header-title">
             <img src="./assets/purva.png" alt="Purva Gawde">
-            <h1>Assignments</h1>
+            <h1>CSCB20 Course Website</h1>
         </div>
         <div class="header-control">
             <div class="theme-toggle">
@@ -74,15 +74,15 @@
                     <h2>Overview</h2>
                 </div>
                 <div class="container-content">
-                    <ul>
-                        <li>Here are the assignment and exercise topics, weights, and due 
-                            dates.  I
-                                    will be posting the exercise and assignment handouts here.  All exercises and
-                            assignments 
-                            will be submitted on <a 
-                            href="http://markus.utsc.utoronto.ca/cscb20w17/en">MarkUs</a></li>
-                    </ul>
+                    <p>Here are the assignment and exercise topics, weights, and due
+                        dates. I will be posting the exercise and assignment handouts here. </p>
+                    <p>All exercises and assignments will be submitted on <a
+                            href="http://markus.utsc.utoronto.ca/cscb20w17/en">MarkUs</a>.
                 </div>
+            </div>
+        </div>
+        <div class="flex-right">
+            <div class="container">
                 <div class="container-header">
                     <h2>Assignments</h2>
                 </div>
@@ -95,8 +95,6 @@
             </div>
         </div>
     </div>
-
-    
 
 </body>
 

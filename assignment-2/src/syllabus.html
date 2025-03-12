@@ -17,7 +17,7 @@
             const themeToggle = document.getElementById('theme-toggle');
 
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' || savedTheme === null) {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 themeToggle.checked = true;
             }
@@ -39,7 +39,7 @@
     <header>
         <div class="header-title">
             <img src="./assets/purva.png" alt="Purva Gawde">
-            <h1>Syllabus</h1>
+            <h1>CSCB20 Course Website</h1>
         </div>
         <div class="header-control">
             <div class="theme-toggle">
@@ -68,15 +68,14 @@
     </header>
 
     <div class="main-container">
-        <div class="flex-left">
+        <div class="no-flex">
             <div class="container">
                 <div class="container-header">
                     <h2>Course Syllabus</h2>
                 </div>
                 <div class="container-content">
-                    <ul>
-                        <li><iframe src="CourseContent/Syllabus.pdf" width="600" height="400"></iframe></li>
-                    </ul>
+                    <p><a href="CourseContent/Syllabus.pdf">Download the PDF</a>, or preview it below:</p>
+                    <iframe src="CourseContent/Syllabus.pdf" width="600" height="400"></iframe>
                 </div>
             </div>
         </div>
