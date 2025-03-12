@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>CSCB20 Course Website</title>
+    <link rel="stylesheet" type="text/css" href="index.css">
+
+    <link ref="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script>
+        // NOTE: This JavaScript code is only to CONTROL whether dark mode should be ON/OFF
+        // The actual dark mode is realized with CSS ONLY (with variables)
+        // This JavaScript code is added so that you won't have to modify the code to turn on/off dark mode
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.checked = true;
+            }
+
+            themeToggle.addEventListener('change', () => {
+                if (themeToggle.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', '');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="header-title">
+            <img src="./assets/purva.png" alt="Purva Gawde">
+            <h1>Syllabus</h1>
+        </div>
+        <div class="header-control">
+            <div class="theme-toggle">
+                <label for="theme-toggle">
+                    <input type="checkbox" id="theme-toggle">
+                    Dark Mode
+                </label>
+            </div>
+            <div>
+                <nav class="menu">
+                    <a class="menu-control-button" href="#"><i class="fa-solid fa-bars"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="syllabus.html">Syllabus</a></li>
+                        <li><a href="assignments.html">Assignments</a></li>
+                        <li><a href="labs.html">Labs</a></li>
+                        <li><a href="lecture_notes.html">Lecture Notes</a></li>
+                        <li><a href="https://piazza.com/class/m5fmz9kzjo83yk/">Piazza</a></li>
+                        <li><a href="https://markus2.utsc.utoronto.ca/">MarkUs</a></li>
+                        <li><a href="anon_feedback.html">Anon Feedback</a></li>
+                        <li><a href="course_team.html">Course Team</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="main-container">
+        <div class="flex-left">
+            <div class="container">
+                <div class="container-header">
+                    <h2>Course Syllabus</h2>
+                </div>
+                <div class="container-content">
+                    <ul>
+                        <li><iframe src="CourseContent/Syllabus.pdf" width="600" height="400"></iframe></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+
+</body>
+
+</html>
+
+</html>
