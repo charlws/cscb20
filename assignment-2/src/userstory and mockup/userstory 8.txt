@@ -1,0 +1,1 @@
+“As a student user, on Syllabus, the student will be able to see the detailed course information and syllabus."

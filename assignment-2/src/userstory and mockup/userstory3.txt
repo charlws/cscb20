@@ -1,0 +1,1 @@
+“The header of each webpage should change to the width of the browser (Web, tablet, mobile) with a title on the top of the page showing where the student is currently. The width of the contents will change as well."

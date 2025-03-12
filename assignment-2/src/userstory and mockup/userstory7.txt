@@ -1,0 +1,1 @@
+“As a student user, on Piazza page, the student should find the links to Piazza which are provided a platform to discuss course contents online."

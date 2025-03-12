@@ -1,0 +1,1 @@
+"As a student user, on Lecture notes page, the student should find lecture materials and extra documents associated with the contents taught in lectures."
