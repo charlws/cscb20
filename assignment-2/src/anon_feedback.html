@@ -17,7 +17,7 @@
             const themeToggle = document.getElementById('theme-toggle');
 
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' || savedTheme === null) {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 themeToggle.checked = true;
             }
@@ -39,7 +39,7 @@
     <header>
         <div class="header-title">
             <img src="./assets/purva.png" alt="Purva Gawde">
-            <h1>Anon Feedback</h1>
+            <h1>CSCB20 Course Website</h1>
         </div>
         <div class="header-control">
             <div class="theme-toggle">
@@ -71,21 +71,31 @@
         <div class="flex-left">
             <div class="container">
                 <div class="container-header">
-                    <h2>Please leave your feedback! It helps us to improve!</h2>
+                    <h2>Anon Feedback</h2>
                 </div>
                 <div class="container-content">
                     <form>
-                        <label for="feedback">Your feedback:</label>
-                        <textarea name="feedback" placeholder="Please enter your feedback here"></textarea><br> 
-                        <button type="submit">Submit Feedback</button>
+                        <textarea class="feedback-form" name="feedback"
+                            placeholder="Please enter your feedback here"></textarea><br>
+                        <div style="display:flex;justify-content:end;">
+                            <button class="button" type="submit">Submit Feedback</button>
+                        </div>
                     </form>
                 </div>
             </div>
         </div>
+        <div class="flex-right">
+            <div class="container">
+                <div class="container-header">
+                    <h2>Remark</h2>
+                </div>
+                <div class="container-content">
+                    <p>We'd love to hear from you! Your opinions make us improve.</p>
+                    <p>All feedbacks are anonymous.</p>
+                </div>
+            </div>
+        </div>
     </div>
-
-    
-
 </body>
 
 </html>

@@ -17,7 +17,7 @@
             const themeToggle = document.getElementById('theme-toggle');
 
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' || savedTheme === null) {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 themeToggle.checked = true;
             }

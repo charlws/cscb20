@@ -17,7 +17,7 @@
             const themeToggle = document.getElementById('theme-toggle');
 
             const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark') {
+            if (savedTheme === 'dark' || savedTheme === null) {
                 document.documentElement.setAttribute('data-theme', 'dark');
                 themeToggle.checked = true;
             }
@@ -39,7 +39,7 @@
     <header>
         <div class="header-title">
             <img src="./assets/purva.png" alt="Purva Gawde">
-            <h1>Course Team</h1>
+            <h1>CSCB20 Course Website</h1>
         </div>
         <div class="header-control">
             <div class="theme-toggle">
@@ -68,29 +68,34 @@
     </header>
 
     <div class="main-container">
-        <div class="flex-left">
+        <div class="no-flex">
             <div class="container">
                 <div class="container-header">
-                    <h2>Course Syllabus</h2>
+                    <h2>Course Team</h2>
                 </div>
-                <div class="container-content">
-                    <img src="./assets/purva.png" alt="Purva Gawde">
-                    <p>Purva Gawde</p>
-                    <p>Purva is the course coordinator, which means that she deals with all administrative matters:
-                        missed
-                        work,
-                        problems with your grades, and TA issues.</p>
-                    <p>Email: <a rel="noreferrer" href="mailto:purva.gawde@utoronto.ca">purva.gawde@utoronto.ca</a></p>
-                    <br />
-                    <p>Office Hours:</p>
-                    <p>Location: IA 4056</p>
-                    <p>Time: Monday 11:00 to 12:00</p>
+                <div class="container-content flex">
+                    <div class="flex-left">
+                        <p>Purva Gawde</p>
+                        <p>Purva is the course coordinator, which means that she deals with all administrative matters:
+                            missed
+                            work,
+                            problems with your grades, and TA issues.</p>
+                        <p>Email: <a rel="noreferrer" href="mailto:purva.gawde@utoronto.ca">purva.gawde@utoronto.ca</a>
+                        </p>
+                        <br />
+                        <p>Office Hours:</p>
+                        <p>Location: IA 4056</p>
+                        <p>Time: Monday 11:00 to 12:00</p>
+                    </div>
+                    <div class="flex-right" style="display:flex;justify-content:right;">
+                        <img src="./assets/purva.png" alt="Purva Gawde" style="margin-right:48px;">
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
-    
+
 
 </body>
 
