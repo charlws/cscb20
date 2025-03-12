@@ -1,0 +1,1 @@
+“As a student user, the student can find the menu button at the right top of the website page, which hovering over it will show 9 links in total of all webpages. By clicking one of them, the student will be redirected to the corresponding webpage.”

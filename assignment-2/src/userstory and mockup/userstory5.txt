@@ -1,0 +1,1 @@
+"As a student user, on Labs page, the student should find the posted tutorial exercises. The student should also find the calendar indicating the dates of tutorials and TA office hours.  

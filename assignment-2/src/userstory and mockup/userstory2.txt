@@ -1,0 +1,1 @@
+“As a student user, the student must be able to see the most basic CSCB20 Winter 2024 course information on the main (home) page. Course information includes course description, coursework breakdown, academic integrity, accessibility statement, diversity statement and contact information.”
