@@ -24,24 +24,24 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 
 ### Initial Setup
 
-[x] - transition from a2 / basic setup (@charles)
+- [x] transition from a2 / basic setup (@charles)
 
-[] - file structure (js and images folder) (@charles)
+- [ ] file structure (js and images folder) (@charles)
 
-[] - db schema and setup (@charles)
+- [ ] db schema and setup (@charles)
 
-[] - authentication (@charles)
+- [ ] authentication (@charles)
 
 ### Actual Website
 
-[] - Student Features
+- [ ] Student Features
 
-[] - Instructor Features
+- [ ] Instructor Features
 
 ### Clean up
 
-[] - Testing (Database + Features)
+- [ ] Testing (Database + Features)
 
-[] - Report
+- [ ] Report
 
-[] - Final check before submission
+- [ ] Final check before submission
