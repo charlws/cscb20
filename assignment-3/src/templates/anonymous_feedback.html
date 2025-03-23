@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Anonymous Feedback
+{% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Anonymous Feedback</h2>
+            </div>
+            <div class="container-content">
+                <form>
+                    <textarea class="feedback-form" name="feedback"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                    <div style="display:flex;justify-content:end;margin-top:8px;">
+                        <button class="button" type="submit">Submit Feedback</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="flex-right">
+        <div class="container">
+            <div class="container-header">
+                <h2>Remark</h2>
+            </div>
+            <div class="container-content">
+                <p>We'd love to hear from you! Your opinions make us improve.</p>
+                <p>All feedbacks are anonymous.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

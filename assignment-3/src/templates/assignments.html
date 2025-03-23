@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Assignments
+{% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Overview</h2>
+            </div>
+            <div class="container-content">
+                <p>Here are the assignment and exercise topics, weights, and due
+                    dates. I will be posting the exercise and assignment handouts here. </p>
+                <p>All exercises and assignments will be submitted on <a
+                        href="http://markus.utsc.utoronto.ca/cscb20w17/en">MarkUs</a>.
+            </div>
+        </div>
+    </div>
+    <div class="flex-right">
+        <div class="container">
+            <div class="container-header">
+                <h2>Assignments</h2>
+            </div>
+            <div class="container-content">
+                <ul>
+                    <li><a target="_blank" rel="noreferrer" href="{{ url_for('static', filename='assets/Assignment1.pdf')}}">Assignment 1</a></li>
+                    <li><a target="_blank" rel="noreferrer" href="{{ url_for('static', filename='assets/Assignment2.pdf')}}">Assignment 2</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

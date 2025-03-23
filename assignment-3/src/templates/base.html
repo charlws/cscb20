@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>{% block title %}{% endblock %} - CSCB20 Course Website</title>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <link ref="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <script>
+        // NOTE: This JavaScript code is only to CONTROL whether dark mode should be ON/OFF
+        // The actual dark mode is realized with CSS ONLY (with variables)
+        // This JavaScript code is added so that you won't have to modify the code to turn on/off dark mode
+        document.addEventListener('DOMContentLoaded', () => {
+            const themeToggle = document.getElementById('theme-toggle');
+
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark' || savedTheme === null) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                themeToggle.checked = true;
+            }
+
+            themeToggle.addEventListener('change', () => {
+                if (themeToggle.checked) {
+                    document.documentElement.setAttribute('data-theme', 'dark');
+                    localStorage.setItem('theme', 'dark');
+                } else {
+                    document.documentElement.setAttribute('data-theme', '');
+                    localStorage.setItem('theme', 'light');
+                }
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <header>
+        <div class="header-title">
+            <img src="{{ url_for('static', filename='assets/purva.png')}}" alt="Purva Gawde">
+            <h1><a href="/">CSCB20 Course Website</a></h1>
+        </div>
+        <div class="header-control">
+            <div class="theme-toggle">
+                <label for="theme-toggle">
+                    <input type="checkbox" id="theme-toggle">
+                    Dark Mode
+                </label>
+            </div>
+            <div>
+                <nav class="menu">
+                    <a class="menu-control-button" href="#"><i class="fa-solid fa-bars"></i></a>
+                    <ul class="dropdown">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/syllabus">Syllabus</a></li>
+                        <li><a href="/assignments">Assignments</a></li>
+                        <li><a href="/labs">Labs</a></li>
+                        <li><a href="/lecture-notes">Lecture Notes</a></li>
+                        <li><a href="https://piazza.com/class/m5fmz9kzjo83yk/">Piazza</a></li>
+                        <li><a href="https://markus2.utsc.utoronto.ca/">MarkUs</a></li>
+                        <li><a href="/anonymous-feedback">Anonymous Feedback</a></li>
+                        <li><a href="/course-team">Course Team</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    <footer>
+        <a rel="noreferrer" target="_blank" href="https://web.cs.utoronto.ca">
+            <img
+                src="https://images.squarespace-cdn.com/content/v1/5c8e9a223560c34f9070706f/a580ab2c-54b5-48a3-9434-fb405f29a57e/CSC-Reverse-60-height.png?format=1500w" />
+        </a>
+        <p>Website created by Douglas Shen and <a rel="noreferrer" target="_blank"
+                href="https://charlws.com">CharlesWithC</a></p>
+    </footer>
+</body>
+
+</html>
+
+</html>
