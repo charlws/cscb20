@@ -27,7 +27,7 @@ class User(db.Model):
     remark_requests = db.relationship('RemarkRequest', backref='user', lazy=True)
 
     def __repr__(self):
-        return f"User({userId}, '{self.utorId}', '{self.displayName}', '{self.email}')"
+        return f"User({self.userId}, '{self.utorId}', '{self.displayName}', '{self.email}')"
 
 class MarkGroup(db.Model):
     __tablename__ = 'markGroups'
@@ -41,7 +41,7 @@ class MarkGroup(db.Model):
     remark_requests = db.relationship('RemarkRequest', backref='mark_group', lazy=True)
 
     def __repr__(self):
-        return f"MarkGroup({groupId}, '{self.title}', {self.maxGrade})"
+        return f"MarkGroup({self.groupId}, '{self.title}', {self.maxGrade})"
 
 class Mark(db.Model):
     __tablename__ = 'marks'
@@ -54,7 +54,7 @@ class Mark(db.Model):
     remark_requests = db.relationship('RemarkRequest', backref='mark', lazy=True)
 
     def __repr__(self):
-        return f"Mark({markId}, {userId}, {grade})"
+        return f"Mark({self.markId}, {self.userId}, {self.grade})"
 
 class RemarkRequest(db.Model):
     __tablename__ = 'remarkRequests'
@@ -69,7 +69,7 @@ class RemarkRequest(db.Model):
     updatedAt = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"RemarkRequest({requestId}, {userId}, {markGroupId}, {grade}, '{reason}', '{status}')"
+        return f"RemarkRequest({self.requestId}, {self.userId}, {self.markGroupId}, {self.grade}, '{self.reason}', '{self.status}')"
 
 class AnonymousFeedback(db.Model):
     __tablename__ = 'anonymousFeedback'
@@ -79,7 +79,7 @@ class AnonymousFeedback(db.Model):
     createdAt = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
-        return f"AnonymousFeedback({feedbackId}, {instructorId})"
+        return f"AnonymousFeedback({self.feedbackId}, {self.instructorId})"
 
 @app.route('/')
 def index():
