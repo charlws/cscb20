@@ -1,6 +1,85 @@
+import os
+import time
+
 from flask import Flask, render_template
+from flask_bcrypt import Bcrypt
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+
+app.config['SECRET_KEY']='94a86159af9971e2f7978bed5d3ddd2992609807e6e45cb503f096a633a8c81b'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assignment3.db')
+db = SQLAlchemy(app)
+
+class User(db.Model):
+    __tablename__ = 'users'
+    userId = db.Column(db.Integer, primary_key=True)
+    utorId = db.Column(db.String(16), nullable=False) # should be 8 though
+    password = db.Column(db.String(255), nullable=False)
+    studentId = db.Column(db.Integer, nullable=True)
+    displayName = db.Column(db.String(255), nullable=False)
+    email = db.Column(db.String(255), nullable=False)
+    accountType = db.Column(db.String(3), nullable=False)  # stu|ins
+    createdAt = db.Column(db.Integer, nullable=False)
+
+    marks = db.relationship('Mark', backref='user', lazy=True)
+    remark_requests = db.relationship('RemarkRequest', backref='user', lazy=True)
+
+    def __repr__(self):
+        return f"User({userId}, '{self.utorId}', '{self.displayName}', '{self.email}')"
+
+class MarkGroup(db.Model):
+    __tablename__ = 'markGroups'
+    groupId = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(255), nullable=False)
+    maxGrade = db.Column(db.Integer, nullable=False)
+    createdAt = db.Column(db.Integer, nullable=False)
+    releasedAt = db.Column(db.Integer, nullable=False)
+
+    marks = db.relationship('Mark', backref='mark_group', lazy=True)
+    remark_requests = db.relationship('RemarkRequest', backref='mark_group', lazy=True)
+
+    def __repr__(self):
+        return f"MarkGroup({groupId}, '{self.title}', {self.maxGrade})"
+
+class Mark(db.Model):
+    __tablename__ = 'marks'
+    markId = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
+    markGroupId = db.Column(db.Integer, db.ForeignKey('markGroups.groupId'), nullable=False)
+    grade = db.Column(db.Integer, nullable=False)
+    updatedAt = db.Column(db.Integer, nullable=False)
+
+    remark_requests = db.relationship('RemarkRequest', backref='mark', lazy=True)
+
+    def __repr__(self):
+        return f"Mark({markId}, {userId}, {grade})"
+
+class RemarkRequest(db.Model):
+    __tablename__ = 'remarkRequests'
+    requestId = db.Column(db.Integer, primary_key=True)
+    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
+    markGroupId = db.Column(db.Integer, db.ForeignKey('markGroups.groupId'), nullable=False)
+    markId = db.Column(db.Integer, db.ForeignKey('marks.markId'), nullable=False)
+    grade = db.Column(db.Integer, nullable=False)
+    reason = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(1), nullable=False)  # P: pending, A: accepted, R: rejected
+    createdAt = db.Column(db.Integer, nullable=False)
+    updatedAt = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"RemarkRequest({requestId}, {userId}, {markGroupId}, {grade}, '{reason}', '{status}')"
+
+class AnonymousFeedback(db.Model):
+    __tablename__ = 'anonymousFeedback'
+    feedbackId = db.Column(db.Integer, primary_key=True)
+    instructorId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
+    jsonFeedback = db.Column(db.Text, nullable=False)
+    createdAt = db.Column(db.Integer, nullable=False)
+
+    def __repr__(self):
+        return f"AnonymousFeedback({feedbackId}, {instructorId})"
 
 @app.route('/')
 def index():
@@ -31,4 +110,17 @@ def course_team():
     return render_template('course_team.html')
 
 if __name__ == '__main__':
+    with app.app_context():
+        db.create_all()
+
+        # actually, the utorId for instructors shouldn't work bcz utorId should always be 8-length
+        stu1 = User(utorId='student1', password=bcrypt.generate_password_hash('student1').decode('utf-8'), studentId=1000000001, displayName='Student1', email='student1@mail.utoronto.ca', accountType='stu', createdAt=int(time.time()))
+        stu2 = User(utorId='student2', password=bcrypt.generate_password_hash('student2').decode('utf-8'), studentId=1000000002, displayName='Student2', email='student2@mail.utoronto.ca', accountType='stu', createdAt=int(time.time()))
+        ins1 = User(utorId='instructor1', password=bcrypt.generate_password_hash('instructor1').decode('utf-8'), displayName='Instructor1', email='instructor1@mail.utoronto.ca', accountType='ins', createdAt=int(time.time()))
+        ins2 = User(utorId='instructor2', password=bcrypt.generate_password_hash('instructor2').decode('utf-8'), displayName='Instructor2', email='instructor2@mail.utoronto.ca', accountType='ins', createdAt=int(time.time()))
+        if not User.query.first():
+            db.session.add_all([stu1, stu2, ins1, ins2])
+            db.session.commit()
+        db.session.close()
+
     app.run(debug=True)

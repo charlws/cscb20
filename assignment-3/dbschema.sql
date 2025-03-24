@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (userId INTEGER PRIMARY KEY AUTOINCREMENT,
-        utorId VARCHAR(255) NOT NULL, -- login name
+        utorId VARCHAR(16) NOT NULL, -- login name
         password VARCHAR(255) NOT NULL, -- bcrypt hashed password
-        studentId INTEGER NOT NULL, -- numeric id
+        studentId INTEGER, -- numeric id (can be null for instructors)
         displayName VARCHAR(255) NOT NULL, -- preferred display name
         email VARCHAR(255) NOT NULL,
         accountType CHAR(3) NOT NULL, -- accountType = stu|ins
