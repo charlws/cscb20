@@ -28,7 +28,7 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 
 - [ ] file structure (js and images folder) (@charles)
 
-- [ ] db schema and setup (@charles)
+- [x] db schema and setup (@charles)
 
 - [ ] authentication (@charles)
 
