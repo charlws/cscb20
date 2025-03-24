@@ -2,37 +2,15 @@
 <html>
 
 <head>
-    <title>{% block title %}{% endblock %} - CSCB20 Course Website</title>
+    <title>{% block title %}{% endblock %} - CSCB20</title>
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='images/favicon.ico') }}">
 
     <link ref="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" type="text/css"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 
-    <script>
-        // NOTE: This JavaScript code is only to CONTROL whether dark mode should be ON/OFF
-        // The actual dark mode is realized with CSS ONLY (with variables)
-        // This JavaScript code is added so that you won't have to modify the code to turn on/off dark mode
-        document.addEventListener('DOMContentLoaded', () => {
-            const themeToggle = document.getElementById('theme-toggle');
-
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'dark' || savedTheme === null) {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                themeToggle.checked = true;
-            }
-
-            themeToggle.addEventListener('change', () => {
-                if (themeToggle.checked) {
-                    document.documentElement.setAttribute('data-theme', 'dark');
-                    localStorage.setItem('theme', 'dark');
-                } else {
-                    document.documentElement.setAttribute('data-theme', '');
-                    localStorage.setItem('theme', 'light');
-                }
-            });
-        });
-    </script>
+    <script src="{{ url_for('static', filename='js/theme.js') }}"></script>
 </head>
 
 <body>
