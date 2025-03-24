@@ -10,9 +10,10 @@ Here are notes and todos for assignment 3.
 2. We'll work on this assignment asynchronously. To minimize merge conflicts, let's try not to work on the same file at the same time.  
    Normally this shouldn't really happen after charles finishes the initial setup.
 
-2. We'll work on the report together.  
+3. We'll work on the report together.  
    We'll write it in markdown and convert it to PDF (see [assignment-2](../assignment-2/Report.MD) for reference).
 
+4. I used a `src` folder for common practice. I don't think the structure listed in assignment instruction is good, but we may adjust the structure on submission (remember to change DB path).
 
 ## TODOs
 
@@ -26,7 +27,7 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 
 - [x] transition from a2 / basic setup (@charles)
 
-- [ ] file structure (js and images folder) (@charles)
+- [x] file structure (js and images folder) (@charles)
 
 - [x] db schema and setup (@charles)
 
