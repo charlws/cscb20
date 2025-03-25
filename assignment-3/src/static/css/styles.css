@@ -242,10 +242,60 @@ footer p {
     font-size: 16px;
 }
 
-.button {
+button {
     border-radius: 4px;
     padding: 8px 16px;
     font-size: 14px;
     border: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #1E3866;
+    color: white;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #162f58;
+    transition: background-color 0.2s;
+}
+
+input {
+    border-radius: 4px;
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 8px 0;
+}
+
+label {
+    font-weight: bold;
+}
+
+.fullwidth {
+    box-sizing: border-box;
+    width: 100%;
+}
+
+.mt-4 {
+    margin-top: 4px;
+}
+
+.hidden {
+    display: none;
+}
+
+.block {
+    display: block;
+}
+
+.error-message {
+    color: #d32f2f;
+}
+
+.success-message {
+    color: #2e7d32;
+}
+
+.warning-message {
+    color: #ed6c02;
 }

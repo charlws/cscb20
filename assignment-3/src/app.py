@@ -1,7 +1,7 @@
 import os
 import time
 
-from flask import Flask, render_template
+from flask import Flask, render_template, session, request
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
@@ -108,6 +108,47 @@ def anonymous_feedback():
 @app.route('/course-team')
 def course_team():
     return render_template('course_team.html')
+
+@app.route('/api/signup', methods=['POST'])
+def api_signup():
+    data = request.json
+
+    userObj = User(utorId=data['utorId'], password=bcrypt.generate_password_hash(data['password']).decode('utf-8'), displayName=data['displayName'], email=data['email'], accountType=data['accountType'], createdAt=int(time.time()))
+    if data['accountType'] == 'stu':
+        userObj.studentId = data['studentId']
+    
+    if User.query.filter((User.utorId == data['utorId']) | (User.email == data['email'])).first():
+        return {'error': 'User already exists'}, 400
+    
+    if data['accountType'] == 'stu':
+        userObj.studentId = data['studentId']
+        if User.query.filter_by(studentId=data['studentId']).first():
+            return {'error': 'User already exists'}, 400
+        
+    session['userId'] = userObj.userId
+    session['userInfo'] = {'userId': userObj.userId, 'utorId': userObj.utorId, 'displayName': userObj.displayName, 'email': userObj.email, 'accountType': userObj.accountType}
+    
+    db.session.add(userObj)
+    db.session.commit()
+    return {'message': 'User created successfully'}, 201
+
+@app.route('/api/login', methods=['POST'])
+def api_login():
+    data = request.json
+
+    userObj = User.query.filter_by(utorId=data['utorId']).first()
+    if not userObj or not bcrypt.check_password_hash(userObj.password, data['password']):
+        return {'error': 'Invalid username or password'}, 400
+    
+    session['userId'] = userObj.userId
+    session['userInfo'] = {'userId': userObj.userId, 'utorId': userObj.utorId, 'displayName': userObj.displayName, 'email': userObj.email, 'accountType': userObj.accountType}
+    return {'message': 'Login successful'}, 200
+
+@app.route('/api/logout', methods=['POST'])
+def api_logout():
+    session.pop('userId', None)
+    session.pop('userInfo', None)
+    return {'message': 'Logout successful'}, 200
 
 if __name__ == '__main__':
     with app.app_context():
