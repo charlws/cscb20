@@ -109,6 +109,14 @@ def anonymous_feedback():
 def course_team():
     return render_template('course_team.html')
 
+@app.route('/login')
+def login():
+    return render_template('login.html')
+
+@app.route('/signup')
+def signup():
+    return render_template('signup.html')
+
 @app.route('/api/signup', methods=['POST'])
 def api_signup():
     data = request.json
@@ -116,6 +124,12 @@ def api_signup():
     userObj = User(utorId=data['utorId'], password=bcrypt.generate_password_hash(data['password']).decode('utf-8'), displayName=data['displayName'], email=data['email'], accountType=data['accountType'], createdAt=int(time.time()))
     if data['accountType'] == 'stu':
         userObj.studentId = data['studentId']
+        if not data['studentId'].isnumeric():
+            return {'error': 'Invalid student ID'}, 400
+    elif data['accountType'] != 'ins':
+        return {'error': 'Invalid account type'}, 400
+    if not data['email'].endswith('utoronto.ca'):
+        return {'error': 'Invalid email address'}, 400
     
     if User.query.filter((User.utorId == data['utorId']) | (User.email == data['email'])).first():
         return {'error': 'User already exists'}, 400

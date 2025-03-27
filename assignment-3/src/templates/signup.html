@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Sign Up
+{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="flex-center">
+        <div class="container">
+            <div class="container-header">
+                <h2>Sign Up</h2>
+            </div>
+            <div class="container-content">
+                <div class="flex-container gap-4">
+                    <div class="flex-left-half">
+                        <label for="accountType">Account Type</label><br />
+                        <select id="signup-account-type" name="accountType" class="fullwidth" required>
+                            <option value="stu">Student</option>
+                            <option value="ins">Instructor</option>
+                        </select>
+                    </div>
+                    <div class="flex-right-half" id="signup-student-id-div">
+                        <label for="studentId">Student ID</label><br />
+                        <input id="signup-student-id" type="text" name="studentId" class="fullwidth" required>
+                    </div>
+                </div>
+                <div class="flex-container gap-4">
+                    <div class="flex-left-half">
+                        <label for="email">Email</label><br />
+                        <input id="signup-email" type="text" name="email" class="fullwidth" required>
+                    </div>
+                    <div class="flex-right-half">
+                        <label for="displayName">Display Name</label><br />
+                        <input id="signup-display-name" type="text" name="displayName" class="fullwidth" required>
+                    </div>
+                </div>
+                <div class="flex-container gap-4">
+                    <div class="flex-left-half">
+                        <label for="utorid">UTORid</label><br />
+                        <input id="signup-utorid" type="text" name="utorid" class="fullwidth" required>
+                    </div>
+                    <div class="flex-right-half">
+                        <label for="password">Password</label><br />
+                        <input id="signup-password" type="password" name="password" class="fullwidth" required>
+                    </div>
+                </div>
+                <p>Already have an account? <a href="/login">Login</a></p>
+                <p>Note: You may not change any information after signup.</p>
+                <button id="signup-button" class="fullwidth mt-4">Sign Up</button>
+                <p id="signup-message" class="hidden"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

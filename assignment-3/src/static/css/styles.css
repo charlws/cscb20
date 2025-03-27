@@ -26,7 +26,7 @@ a {
 }
 
 a:hover {
-    color: #1E3866;
+    color: #3a74a7;
 }
 
 header {
@@ -160,11 +160,15 @@ footer p {
     margin-top: 50px;
     padding: 10px 20px;
     color: #fae3e3;
-    min-height: calc(100vh - 160px);
+    min-height: calc(100vh - 200px);
 }
 
 .flex-container {
     display: flex;
+}
+
+.gap-4 {
+    gap: 16px;
 }
 
 .flex {
@@ -192,6 +196,17 @@ footer p {
     width: 50%;
 }
 
+.flex-center {
+    width: 50%;
+    margin: auto;
+}
+
+@media screen and (max-width: 1024px) {
+    .flex-center {
+        width: 75%;
+    }
+}
+
 @media screen and (max-width: 768px) {
     .main-container {
         flex-direction: column;
@@ -200,6 +215,15 @@ footer p {
 
     .flex-left,
     .flex-right {
+        width: 100%;
+    }
+
+    .flex-left-half,
+    .flex-right-half {
+        width: 100%;
+    }
+
+    .flex-center {
         width: 100%;
     }
 }
@@ -258,13 +282,14 @@ button:hover {
     transition: background-color 0.2s;
 }
 
-input {
+input,
+select {
     border-radius: 4px;
     padding: 8px 16px;
     font-size: 14px;
     border: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin: 8px 0;
+    margin: 8px 0 12px 0;
 }
 
 label {
