@@ -14,7 +14,7 @@ $(document).ready(() => {
                 $("#login-message").addClass("success-message");
                 $("#login-message").fadeIn();
                 setTimeout(() => {
-                    window.location.reload();
+                    window.location.href = "/";
                 }, 500);
             },
             error: (error) => {
@@ -45,4 +45,53 @@ $(document).ready(() => {
         });
     };
     $("#logout-button").click(handleLogout);
+
+    const handleAccountTypeChange = () => {
+        const accountType = $("#signup-account-type").val();
+        if (accountType === "instructor") {
+            $("#signup-student-id-div").hide();
+        } else {
+            $("#signup-student-id-div").show();
+        }
+    };
+    $("#signup-account-type").change(handleAccountTypeChange);
+    handleAccountTypeChange(); // detect initial value
+
+    const handleSignUp = () => {
+        $("#signup-message").text("");
+        $("#signup-message").fadeOut();
+        const accountType = $("#signup-account-type").val();
+        const studentId = $("#signup-student-id").val();
+        const email = $("#signup-email").val();
+        const displayName = $("#signup-display-name").val();
+        const utorId = $("#signup-utorid").val();
+        const password = $("#signup-password").val();
+        $.ajax({
+            type: "POST",
+            url: "/api/signup",
+            data: JSON.stringify({ accountType, studentId, email, displayName, utorId, password }),
+            contentType: "application/json",
+            success: (data) => {
+                $("#signup-message").text(data.message);
+                $("#signup-message").addClass("success-message");
+                $("#signup-message").fadeIn();
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 500);
+            },
+            error: (error) => {
+                const data = JSON.parse(error.responseText);
+                $("#signup-message").text(data.error);
+                $("#signup-message").addClass("error-message");
+                $("#signup-message").fadeIn();
+            }
+        });
+    };
+
+    $("#signup-password").keypress((e) => {
+        if (e.which == 13) {
+            handleSignUp();
+        }
+    });
+    $("#signup-button").click(handleSignUp);
 });

@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Login
+{% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="flex-center">
+        <div class="container">
+            <div class="container-header">
+                <h2>Login</h2>
+            </div>
+            <div class="container-content">
+                <div>
+                    <label for="utorid">UTORid</label><br />
+                    <input id="login-utorid" type="text" name="utorid" class="fullwidth" required>
+                </div>
+                <div>
+                    <label for="password">Password</label><br />
+                    <input id="login-password" type="password"  name="password" class="fullwidth" required>
+                </div>
+                <p>Don't have an account? <a href="/signup">Sign Up</a></p>
+                <button id="login-button" class="fullwidth mt-4">Login</button>
+                <p id="login-message" class="hidden"></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
