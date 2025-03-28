@@ -64,6 +64,7 @@ Home
                 <h2>Coursework Breakdown</h2>
             </div>
             <div class="container-content">
+                {% if session['userInfo'] %}
                 <ul>
                     <li>Assignments (33%)</li>
                     <ul>
@@ -107,6 +108,9 @@ Home
                         </li>
                     </ul>
                 </ul>
+                {% else %}
+                <p>Please <a href="/login">login</a> to view course breakdown.</p>
+                {% endif %}
             </div>
         </div>
         <div class="container">
@@ -197,7 +201,7 @@ Home
                 </div>
                 <p>Don't have an account? <a href="/signup">Sign Up</a></p>
                 <button id="login-button" class="fullwidth mt-4">Login</button>
-                <p id="login-message" class="hidden"></p>
+                <p id="login-message" class="{{ 'hidden' if not message else 'error-message' }}">{{ message }}</p>
             </div>
         </div>
         {% endif %}
@@ -212,11 +216,15 @@ Home
                     missed
                     work,
                     problems with your grades, and TA issues.</p>
+                {% if session['userInfo'] %}
                 <p>Email: <a rel="noreferrer" href="mailto:purva.gawde@utoronto.ca">purva.gawde@utoronto.ca</a></p>
                 <br />
                 <p>Office Hours:</p>
                 <p>Location: IA 4056</p>
                 <p>Time: Monday 11:00 to 12:00</p>
+                {% else %}
+                <p>Please <a href="/login">login</a> to access detailed information.</p>
+                {% endif %}
             </div>
         </div>
     </div>

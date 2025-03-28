@@ -52,7 +52,7 @@ Sign Up
                 <p>Already have an account? <a href="/login">Login</a></p>
                 <p>Note: You may not change any information after signup.</p>
                 <button id="signup-button" class="fullwidth mt-4">Sign Up</button>
-                <p id="signup-message" class="hidden"></p>
+                <p id="signup-message" class="{{ 'hidden' if not message else 'error-message' }}">{{ message }}</p>
             </div>
         </div>
     </div>

@@ -44,7 +44,7 @@ $(document).ready(() => {
             }
         });
     };
-    $("#logout-button").click(handleLogout);
+    $("#logout-button,#dropdown-logout-button").click(handleLogout);
 
     const handleAccountTypeChange = () => {
         const accountType = $("#signup-account-type").val();
@@ -94,4 +94,15 @@ $(document).ready(() => {
         }
     });
     $("#signup-button").click(handleSignUp);
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const message = urlParams.get('message');
+    if (message) {
+        $("#login-message").text(message);
+        $("#login-message").addClass("error-message");
+        $("#login-message").fadeIn();
+        $("#signup-message").text(message);
+        $("#signup-message").addClass("error-message");
+        $("#signup-message").fadeIn();
+    }
 });

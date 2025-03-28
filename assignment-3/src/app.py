@@ -1,7 +1,7 @@
 import os
 import time
 
-from flask import Flask, render_template, session, request
+from flask import Flask, render_template, session, request, redirect, url_for
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
@@ -87,26 +87,38 @@ def index():
 
 @app.route('/syllabus')
 def syllabus():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to access the syllabus."))
     return render_template('syllabus.html')
 
 @app.route('/assignments')
 def assignments():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to access the assignments."))
     return render_template('assignments.html')
 
 @app.route('/labs')
 def labs():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to access information about labs."))
     return render_template('labs.html')
 
 @app.route('/lecture-notes')
 def lecture_notes():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to access the lecture notes."))
     return render_template('lecture_notes.html')
 
 @app.route('/anonymous-feedback')
 def anonymous_feedback():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to use the anonymous feedback."))
     return render_template('anonymous_feedback.html')
 
 @app.route('/course-team')
 def course_team():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to view information about the course team."))
     return render_template('course_team.html')
 
 @app.route('/login')
