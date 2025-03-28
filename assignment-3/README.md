@@ -31,7 +31,7 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 
 - [x] db schema and setup (@charles)
 
-- [ ] authentication (@charles)
+- [x] authentication (@charles)
 
 ### Actual Website
 

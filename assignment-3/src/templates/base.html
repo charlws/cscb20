@@ -33,8 +33,12 @@
                 <nav class="menu">
                     <a class="menu-control-button" href="#"><i class="fa-solid fa-bars"></i></a>
                     <ul class="dropdown">
+                        {% if not session['userInfo'] %}
                         <li><a href="/login">Login</a></li>
                         <li><a href="/signup">Sign Up</a></li>
+                        {% else %}
+                        <li><a id="dropdown-logout-button" href="#">Logout</a></li>
+                        {% endif %}
                         <hr />
                         <li><a href="/">Home</a></li>
                         <li><a href="/syllabus">Syllabus</a></li>
