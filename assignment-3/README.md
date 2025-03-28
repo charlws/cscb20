@@ -17,7 +17,7 @@ Here are notes and todos for assignment 3.
 
 ## TODOs
 
-Please mark as done by turning `[]` into `[x]`. You may pick up unclaimed work (i.e. no @ handle in brackets) and add credits.
+Please mark as done by turning `[ ]` into `[x]`. You may pick up unclaimed work (i.e. no @ handle in brackets) and add credits.
 
 This is only the *main* todos, i.e. it's not broken down to specific sub-features. You may add sub-features to the list, or just work on them as a whole and mark the main feature as done.
 
@@ -38,6 +38,9 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 - [ ] Student Features
 
 - [ ] Instructor Features
+
+- Note: We may want to hard-code the data for markGroups (i.e. assignments/exams etc) in `app.py` (I used a database table for "generalization" purpose).  
+  We may also want to add some dummy `marks` for the default students so they won't see "No marks available" when they login.
 
 ### Clean up
 
