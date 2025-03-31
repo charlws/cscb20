@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+
+{% block title %} Grades {% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <!-- Assignments Section -->
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>All Assignments</h2>
+            </div>
+            <div class="container-content">
+                <table>
+                    <tr>
+                        <th>Grade Title</th>
+                        <th>Grade Received</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for mark in student_marks %}
+                        {% if mark.markGroup and "assignment" in mark.markGroup.title.lower() %}
+                        <tr>
+                            <td>{{ mark.markGroup.title }}</td>
+                            <td>{{ mark.grade }}/{{ mark.markGroup.maxGrade }}</td>
+                            <td>
+                                {% if mark.markGroup.releasedAt <= current_time %}
+                                <form action="{{ url_for('request_regrade', mark_id=mark.markId) }}" method="GET">
+                                    <button type="submit">Request Regrade</button>
+                                </form>
+                                {% else %}
+                                <span class="not-released">Not released yet</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Labs/Tutorials Section -->
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Labs/Tutorials</h2>
+            </div>
+            <div class="container-content">
+                <table>
+                    <tr>
+                        <th>Grade Title</th>
+                        <th>Grade Received</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for mark in student_marks %}
+                        {% if mark.markGroup and ("lab" in mark.markGroup.title.lower() or "tutorial" in mark.markGroup.title.lower()) %}
+                        <tr>
+                            <td>{{ mark.markGroup.title }}</td>
+                            <td>{{ mark.grade }}/{{ mark.markGroup.maxGrade }}</td>
+                            <td>
+                                {% if mark.markGroup.releasedAt <= current_time %}
+                                <form action="{{ url_for('request_regrade', mark_id=mark.markId) }}" method="GET">
+                                    <button type="submit">Request Regrade</button>
+                                </form>
+                                {% else %}
+                                <span class="not-released">Not released yet</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Exams Section -->
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Exams</h2>
+            </div>
+            <div class="container-content">
+                <table>
+                    <tr>
+                        <th>Grade Title</th>
+                        <th>Grade Received</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for mark in student_marks %}
+                        {% if mark.markGroup and ("exam" in mark.markGroup.title.lower() or "midterm" in mark.markGroup.title.lower() or "final" in mark.markGroup.title.lower()) %}
+                        <tr>
+                            <td>{{ mark.markGroup.title }}</td>
+                            <td>{{ mark.grade }}/{{ mark.markGroup.maxGrade }}</td>
+                            <td>
+                                {% if mark.markGroup.releasedAt <= current_time %}
+                                <form action="{{ url_for('request_regrade', mark_id=mark.markId) }}" method="GET">
+                                    <button type="submit">Request Regrade</button>
+                                </form>
+                                {% else %}
+                                <span class="not-released">Not released yet</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
