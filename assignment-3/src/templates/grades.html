@@ -4,6 +4,12 @@
 
 {% block content %}
 <div class="main-container flex-container">
+    <!--instructor view-->
+    
+
+
+    <!--Student view-->
+    {%if session['userInfo']['accountType'] == 'stu' %}
     <!-- Assignments Section -->
     <div class="flex-left">
         <div class="container">
@@ -108,5 +114,6 @@
             </div>
         </div>
     </div>
+{% endif %}
 </div>
 {% endblock %}

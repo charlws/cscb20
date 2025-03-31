@@ -5,6 +5,26 @@ Anonymous Feedback
 {% endblock %}
 
 {% block content %}
+
+<!--Instructor view-->
+{%if session['userInfo']['accountType'] == 'ins' %}
+<div class="main-container flex-container">
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Feedback recieved</h2>
+            </div>
+            <div class="container-content">
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+
+<!--Student view-->
+{%if session['userInfo']['accountType'] == 'stu' %}
 <div class="main-container flex-container">
     <div class="flex-left">
         <div class="container">
@@ -34,4 +54,5 @@ Anonymous Feedback
         </div>
     </div>
 </div>
+{% endif %}
 {% endblock %}
