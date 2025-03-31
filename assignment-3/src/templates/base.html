@@ -41,6 +41,11 @@
                         {% endif %}
                         <hr />
                         <li><a href="/">Home</a></li>
+                        {% if 'userInfo' in session and session['userInfo']['accountType'] == 'stu' %}
+                        <li><a href="/grades">Marks</a></li>
+                        {% elif 'userInfo' in session and session['userInfo']['accountType'] == 'ins' %}
+                        <li><a href="/feedback-recieved">Feedback</a></li>
+                        {% endif %}
                         <li><a href="/syllabus">Syllabus</a></li>
                         <li><a href="/assignments">Assignments</a></li>
                         <li><a href="/labs">Labs</a></li>
