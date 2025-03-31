@@ -87,16 +87,16 @@ def index():
 
 @app.route('/grades')
 def grades():
-    if 'userId' not in session or session.get('userInfo', {}).get('accountType') != 'stu':
+    if 'userId' not in session:
         return redirect(url_for('login', message="Please login to access the syllabus."))
     current_user_id = session.get('user_id')
     current_time = int(time.time())
-    
-    student_marks = db.session.query(Mark, MarkGroup)\
+    if session.get('userInfo', {}).get('accountType') == 'stu':
+        student_marks = db.session.query(Mark, MarkGroup)\
         .join(MarkGroup, Mark.markGroupId == MarkGroup.groupId)\
         .filter(Mark.userId == current_user_id)\
         .all()
-    return render_template('grades.html', student_marks = student_marks, current_time = current_time)
+        return render_template('grades.html', student_marks = student_marks, current_time = current_time)
 
 @app.route('/syllabus')
 def syllabus():
