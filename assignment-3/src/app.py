@@ -92,11 +92,12 @@ def grades():
     current_user_id = session.get('userId')
     current_time = int(time.time())
     if session.get('userInfo', {}).get('accountType') == 'stu':
-        student_marks = db.session.query(Mark, MarkGroup)\
+        student_marks = db.session.query(Mark, MarkGroup, RemarkRequest)\
                             .join(MarkGroup, Mark.markGroupId == MarkGroup.groupId)\
+                            .outerjoin(RemarkRequest, Mark.markId == RemarkRequest.markId)\
                             .filter(Mark.userId == current_user_id)\
                             .all()
-        return render_template('grades.html', student_marks = student_marks, current_time = current_time)
+        return render_template('grades_student.html', student_marks = student_marks, current_time = current_time)
 
 @app.route('/grades/{markId}/regrade')
 def request_regrade(markId):
@@ -192,6 +193,26 @@ def api_logout():
     session.pop('userId', None)
     session.pop('userInfo', None)
     return {'message': 'Logout successful'}, 200
+
+@app.route('/api/regrade-request', methods=['POST'])
+def api_regrade_request():
+    data = request.json
+
+    if not session.get('userId'):
+        return {'error': 'User not logged in'}, 401
+
+    markObj = Mark.query.filter_by(markId=data['markId']).first()
+    if not markObj:
+        return {'error': 'Invalid mark ID'}, 400
+    existingRemarkRequest = RemarkRequest.query.filter_by(markId=data['markId'], userId=session['userId']).first()
+    if existingRemarkRequest:
+        return {'error': 'Regrade request already submitted'}, 400
+    
+    remarkRequestObj = RemarkRequest(userId=session['userId'], markGroupId=markObj.markGroupId, markId=data['markId'], grade=markObj.grade, reason=data['reason'], status='P', createdAt=int(time.time()), updatedAt=int(time.time()))
+    
+    db.session.add(remarkRequestObj)
+    db.session.commit()
+    return {'message': 'Regrade request submitted successfully'}, 201
 
 if __name__ == '__main__':
     with app.app_context():
