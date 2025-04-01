@@ -44,10 +44,13 @@
                         <li><a href="/">Home</a></li>
                         {% if 'userInfo' in session%}
                         <li><a href="/grades">Marks</a></li>
+                        {% if session['userInfo']['accountType'] == 'stu'%}
+                        <li><a href="/anonymous-feedback">Feedback</a></li>
+                        {% endif %}
+                        {% if session['userInfo']['accountType'] == 'ins'%}
+                        <li><a href="/regrade_requests">Regrade requests</a></li> <!--not coded yet-->
                         <li><a href="/feedback-recieved">Feedback</a></li>
                         {% endif %}
-                        {% if 'userInfo' in session and session['userInfo']['accountType'] == 'ins'%}
-                        <li><a href="/regrade_requests">Regrade requests</a></li> <!--not coded yet-->
                         {% endif %}
                         <li><a href="/syllabus">Syllabus</a></li>
                         <li><a href="/assignments">Assignments</a></li>
@@ -55,7 +58,6 @@
                         <li><a href="/lecture-notes">Lecture Notes</a></li>
                         <li><a href="https://piazza.com/class/m5fmz9kzjo83yk/">Piazza</a></li>
                         <li><a href="https://markus2.utsc.utoronto.ca/">MarkUs</a></li>
-                        <li><a href="/anonymous-feedback">Anonymous Feedback</a></li>
                         <li><a href="/course-team">Course Team</a></li>
                     </ul>
                 </nav>
