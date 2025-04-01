@@ -41,7 +41,7 @@ $(document).ready(() => {
                 $("#regrade-submit-button").attr("disabled", "disabled");
                 
                 const button = $(`.regrade-button[data-mark-id="${regradeMarkId}"]`);
-                button.replaceWith(`<span class="muted">Regrade Requested</span>`);
+                button.replaceWith(`<span class="muted">Regrade Requested (Pending)</span>`);
             },
             error: (error) => {
                 const data = JSON.parse(error.responseText);

@@ -64,7 +64,7 @@ class RemarkRequest(db.Model):
     markId = db.Column(db.Integer, db.ForeignKey('marks.markId'), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
     reason = db.Column(db.Text, nullable=False)
-    status = db.Column(db.String(1), nullable=False)  # P: pending, A: accepted, R: rejected
+    status = db.Column(db.String(10), nullable=False) # Pending / Processed
     createdAt = db.Column(db.Integer, nullable=False)
     updatedAt = db.Column(db.Integer, nullable=False)
 
@@ -208,7 +208,7 @@ def api_regrade_request():
     if existingRemarkRequest:
         return {'error': 'Regrade request already submitted'}, 400
     
-    remarkRequestObj = RemarkRequest(userId=session['userId'], markGroupId=markObj.markGroupId, markId=data['markId'], grade=markObj.grade, reason=data['reason'], status='P', createdAt=int(time.time()), updatedAt=int(time.time()))
+    remarkRequestObj = RemarkRequest(userId=session['userId'], markGroupId=markObj.markGroupId, markId=data['markId'], grade=markObj.grade, reason=data['reason'], status='Pending', createdAt=int(time.time()), updatedAt=int(time.time()))
     
     db.session.add(remarkRequestObj)
     db.session.commit()

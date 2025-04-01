@@ -308,6 +308,16 @@ button:disabled {
     cursor: default;
 }
 
+.button-secondary {
+    background-color: #555;
+    color: white;
+}
+
+.button-secondary:hover {
+    background-color: #444;
+    transition: background-color 0.2s;
+}
+
 input,
 select,
 textarea {
