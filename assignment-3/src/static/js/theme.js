@@ -17,3 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+$(document).ready(() => {
+    const handleModalClose = () => {
+        $(".modal").fadeOut();
+        $(".modal-backdrop").fadeOut();
+    };
+    $(".modal-backdrop").on('click', handleModalClose);
+    $(document).on('keydown', (e) => {
+        if (e.key === 'Escape') {
+            handleModalClose();
+        }
+    });
+});

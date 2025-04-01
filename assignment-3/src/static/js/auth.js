@@ -1,7 +1,8 @@
 $(document).ready(() => {
     const handleLogin = () => {
         $("#login-message").text("");
-        $("#login-message").fadeOut();
+        $("#login-message").removeClass("error-message");
+        $("#login-message").removeClass("success-message");
         const utorId = $("#login-utorid").val();
         const password = $("#login-password").val();
         $.ajax({
@@ -59,7 +60,8 @@ $(document).ready(() => {
 
     const handleSignUp = () => {
         $("#signup-message").text("");
-        $("#signup-message").fadeOut();
+        $("#signup-message").removeClass("error-message");
+        $("#signup-message").removeClass("success-message");
         const accountType = $("#signup-account-type").val();
         const studentId = $("#signup-student-id").val();
         const email = $("#signup-email").val();
