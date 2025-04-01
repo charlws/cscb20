@@ -180,6 +180,10 @@ footer p {
     width: 100%;
 }
 
+.flex-33 {
+    width: 33%;
+}
+
 .flex-left {
     width: 66.6%;
 }
@@ -205,12 +209,25 @@ footer p {
     .flex-center {
         width: 75%;
     }
+
+    .contain-33 {
+        flex-direction: column;
+        padding: 5px;
+    }
+
+    .flex-33 {
+        width: 100%;
+    }
 }
 
 @media screen and (max-width: 768px) {
     .main-container {
         flex-direction: column;
         padding: 5px;
+    }
+
+    .flex-33 {
+        width: 100%;
     }
 
     .flex-left,
@@ -340,6 +357,7 @@ label {
     flex-direction: column;
     border: 1px solid #888;
     border-radius: 4px;
+    overflow: scroll;
 }
 
 .table-header {
