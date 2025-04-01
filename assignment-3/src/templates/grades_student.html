@@ -7,110 +7,127 @@
 {% endblock %}
 
 {% block content %}
-<div class="main-container contain-33 flex-container">
-    <div class="flex-33">
-        <div class="container">
-            <div class="container-header">
-                <h2>All Assignments</h2>
-            </div>
-            <div class="container-content">
-                <div class="grades-table">
-                    <div class="table-header">
-                        <div class="header-cell">Evaluation</div>
-                        <div class="header-cell">Grade</div>
-                        <div class="header-cell">Action</div>
-                    </div>
-                    {% for mark in student_marks %}
-                        {% if ("assignment" in mark[1].title.lower()) %}
-                        <div class="table-row">
-                            <div class="table-cell">{{ mark[1].title }}</div>
-                            {% if mark[1].releasedAt <= current_time %}
-                                <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
-                            {% endif %}
-                            <div class="table-cell">
-                                {% if not mark[2] and mark[1].releasedAt <= current_time %}
-                                <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
-                                {% elif mark[2] %}
-                                <span class="muted">Regrade Requested</span>
-                                {% else %}
-                                <span class="muted">Not released yet</span>
-                                {% endif %}
-                            </div>
-                        </div>
-                        {% endif %}
-                    {% endfor %}
+<div class="main-container">
+    <div class="flex-container">
+        <div class="no-flex">
+            <div class="container">
+                <div class="container-header">
+                    <h2>Grades for {{ session['userInfo']['displayName'] }}</h2>
+                </div>
+                <div class="container-content">
+                    <p>You can view your grades here and submit regrade requests, if necessary.</p>
+                    <p>Please note that your work will be re-evaulated entirely and we may add and/or deduct marks when you submit a regrade request.</p>
+                    <p>You can only submit a regrade request once and you may not edit it once you submitted it.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="flex-33">
-        <div class="container">
-            <div class="container-header">
-                <h2>Labs/Tutorials</h2>
-            </div>
-            <div class="container-content">
-                <div class="grades-table">
-                    <div class="table-header">
-                        <div class="header-cell">Evaluation</div>
-                        <div class="header-cell">Grade</div>
-                        <div class="header-cell">Action</div>
-                    </div>
-                    {% for mark in student_marks %}
-                        {% if ("lab" in mark[1].title.lower() or "tutorial" in mark[1].title.lower()) %}
-                        <div class="table-row">
-                            <div class="table-cell">{{ mark[1].title }}</div>
-                            {% if mark[1].releasedAt <= current_time %}
-                                <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
-                            {% endif %}
-                            <div class="table-cell">
-                                {% if not mark[2] and mark[1].releasedAt <= current_time %}
-                                <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
-                                {% elif mark[2] %}
-                                <span class="muted">Regrade Requested</span>
-                                {% else %}
-                                <span class="muted">Not released yet</span>
-                                {% endif %}
-                            </div>
+    <div class="contain-33 flex-container">
+        <div class="flex-33">
+            <div class="container">
+                <div class="container-header">
+                    <h2>All Assignments</h2>
+                </div>
+                <div class="container-content">
+                    <div class="grades-table">
+                        <div class="table-header">
+                            <div class="header-cell">Evaluation</div>
+                            <div class="header-cell">Grade</div>
+                            <div class="header-cell">Action</div>
                         </div>
-                        {% endif %}
-                    {% endfor %}
+                        {% for mark in student_marks %}
+                            {% if ("assignment" in mark[1].title.lower()) %}
+                            <div class="table-row">
+                                <div class="table-cell">{{ mark[1].title }}</div>
+                                {% if mark[1].releasedAt <= current_time %}
+                                    <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                                {% endif %}
+                                <div class="table-cell">
+                                    {% if not mark[2] and mark[1].releasedAt <= current_time %}
+                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
+                                    {% elif mark[2] %}
+                                    <span class="muted">Regrade Requested ({{ mark[2].status }})</span>
+                                    {% else %}
+                                    <span class="muted">Not released yet</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <div class="flex-33">
-        <div class="container">
-            <div class="container-header">
-                <h2>Exams</h2>
-            </div>
-            <div class="container-content">
-                <div class="grades-table">
-                    <div class="table-header">
-                        <div class="header-cell">Evaluation</div>
-                        <div class="header-cell">Grade</div>
-                        <div class="header-cell">Action</div>
-                    </div>
-                    {% for mark in student_marks %}
-                        {% if ("exam" in mark[1].title.lower() or "midterm" in mark[1].title.lower() or "final" in mark[1].title.lower()) %}
-                        <div class="table-row">
-                            <div class="table-cell">{{ mark[1].title }}</div>
-                            {% if mark[1].releasedAt <= current_time %}
-                                <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
-                            {% endif %}
-                            <div class="table-cell">
-                                {% if not mark[2] and mark[1].releasedAt <= current_time %}
-                                <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
-                                {% elif mark[2] %}
-                                <span class="muted">Regrade Requested</span>
-                                {% else %}
-                                <span class="muted">Not released yet</span>
-                                {% endif %}
-                            </div>
+        <div class="flex-33">
+            <div class="container">
+                <div class="container-header">
+                    <h2>Labs/Tutorials</h2>
+                </div>
+                <div class="container-content">
+                    <div class="grades-table">
+                        <div class="table-header">
+                            <div class="header-cell">Evaluation</div>
+                            <div class="header-cell">Grade</div>
+                            <div class="header-cell">Action</div>
                         </div>
-                        {% endif %}
-                    {% endfor %}
+                        {% for mark in student_marks %}
+                            {% if ("lab" in mark[1].title.lower() or "tutorial" in mark[1].title.lower()) %}
+                            <div class="table-row">
+                                <div class="table-cell">{{ mark[1].title }}</div>
+                                {% if mark[1].releasedAt <= current_time %}
+                                    <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                                {% endif %}
+                                <div class="table-cell">
+                                    {% if not mark[2] and mark[1].releasedAt <= current_time %}
+                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
+                                    {% elif mark[2] %}
+                                    <span class="muted">Regrade Requested ({{ mark[2].status }})</span>
+                                    {% else %}
+                                    <span class="muted">Not released yet</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex-33">
+            <div class="container">
+                <div class="container-header">
+                    <h2>Exams</h2>
+                </div>
+                <div class="container-content">
+                    <div class="grades-table">
+                        <div class="table-header">
+                            <div class="header-cell">Evaluation</div>
+                            <div class="header-cell">Grade</div>
+                            <div class="header-cell">Action</div>
+                        </div>
+                        {% for mark in student_marks %}
+                            {% if ("exam" in mark[1].title.lower() or "midterm" in mark[1].title.lower() or "final" in mark[1].title.lower()) %}
+                            <div class="table-row">
+                                <div class="table-cell">{{ mark[1].title }}</div>
+                                {% if mark[1].releasedAt <= current_time %}
+                                    <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                                {% endif %}
+                                <div class="table-cell">
+                                    {% if not mark[2] and mark[1].releasedAt <= current_time %}
+                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
+                                    {% elif mark[2] %}
+                                    <span class="muted">Regrade Requested ({{ mark[2].status }})</span>
+                                    {% else %}
+                                    <span class="muted">Not released yet</span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
@@ -128,7 +145,8 @@
             <p>Please explain to us why we should re-evaluate your work:</p>
             <textarea id="regrade-reason" class="feedback-form"
             placeholder="The TA made a glaring mistake..."></textarea><br>
-            <div style="display:flex;justify-content:end;margin-top:8px;">
+            <div style="display:flex;justify-content:space-between;margin-top:8px;">
+                <button class="modal-close-button button-secondary" class="button">Close</button>
                 <button id="regrade-submit-button" class="button" type="submit">Submit</button>
             </div>
             <p id="regrade-message" class="hidden"></p>

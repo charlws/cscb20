@@ -23,7 +23,7 @@ $(document).ready(() => {
         $(".modal").fadeOut();
         $(".modal-backdrop").fadeOut();
     };
-    $(".modal-backdrop").on('click', handleModalClose);
+    $(".modal-backdrop,.modal-close-button").on('click', handleModalClose);
     $(document).on('keydown', (e) => {
         if (e.key === 'Escape') {
             handleModalClose();
