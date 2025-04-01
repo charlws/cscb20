@@ -328,10 +328,8 @@ label {
 .grades-table {
     display: flex;
     flex-direction: column;
-    width: 100%;
     border: 1px solid #888;
     border-radius: 4px;
-    overflow: hidden;
 }
 
 .table-header {
@@ -353,7 +351,6 @@ label {
 .table-cell {
     flex: 1;
     padding: 12px;
-    text-align: left;
     display: flex;
     align-items: center;
 }

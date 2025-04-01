@@ -27,7 +27,9 @@
                         {% if ("assignment" in mark[1].title.lower()) %}
                         <div class="table-row">
                             <div class="table-cell">{{ mark[1].title }}</div>
-                            <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                            {% if mark[1].releasedAt <= current_time %}
+                                <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                            {% endif %}
                             <div class="table-cell">
                                 {% if mark[1].releasedAt <= current_time %}
                                 <form action="{{ url_for('request_regrade', mark_id=mark.markId) }}" method="GET">
@@ -62,7 +64,9 @@
                         {% if ("lab" in mark[1].title.lower() or "tutorial" in mark[1].title.lower()) %}
                         <div class="table-row">
                             <div class="table-cell">{{ mark[1].title }}</div>
-                            <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                            {% if mark[1].releasedAt <= current_time %}
+                                <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                            {% endif %}
                             <div class="table-cell">
                                 {% if mark[1].releasedAt <= current_time %}
                                 <form action="{{ url_for('request_regrade', mark_id=mark.markId) }}" method="GET">
@@ -97,7 +101,9 @@
                         {% if ("exam" in mark[1].title.lower() or "midterm" in mark[1].title.lower() or "final" in mark[1].title.lower()) %}
                         <div class="table-row">
                             <div class="table-cell">{{ mark[1].title }}</div>
-                            <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                            {% if mark[1].releasedAt <= current_time %}
+                                <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+                            {% endif %}
                             <div class="table-cell">
                                 {% if mark[1].releasedAt <= current_time %}
                                 <form action="{{ url_for('request_regrade', mark_id=mark.markId) }}" method="GET">
