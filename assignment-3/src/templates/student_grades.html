@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} Grades {% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <!--instructor view-->
+    {%if session['userInfo']['accountType'] == 'ins' %}
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Student grades</h2>
+            </div>
+            <div class="container-content">
+                    <div class="grades-table">
+                        <div class="table-header">
+                            <div class="header-cell">Evaluation</div>
+                            <div class="header-cell">Student</div>
+                            <div class="header-cell">Grade</div>
+                        </div>
+
+                        {% for mark in instructor_marks %}
+                        <div class="table-row">
+                            <div class="table-cell"><h3>{{ mark[1] }}</h3></div>
+                            <div class="table-cell"><p><strong>Student:</strong> {{ mark[0] }}</p></div>
+                            <div class="table-cell"><p><strong>Grade: </strong>{{mark[2] * 100 // mark[3]}}% ({{ mark[2] }}/{{ mark[3] }})</p></div>
+                        </div>
+                        {% endfor %}
+                    </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-right">
+        <div class="container">
+            <div class="container-header">
+                <h2>Remark Requests</h2>
+            </div>
+            <div class="container-content">
+                <p>Welcome back, {{ session['userInfo']['displayName'] }}!</p>
+                <p>Click <a href="remark_requests">here to view remark requests</a></p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
