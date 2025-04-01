@@ -35,7 +35,7 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 
 ### Actual Website
 
-- [ ] Student Features
+- [x] Student Features
 
 - [ ] Instructor Features
 

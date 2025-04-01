@@ -30,7 +30,7 @@ $(document).ready(() => {
         }
 
         $.ajax({
-            type: "POST",
+            type: "PUT",
             url: "/api/regrade-request",
             data: JSON.stringify({ markId: regradeMarkId, reason }),
             contentType: "application/json",
