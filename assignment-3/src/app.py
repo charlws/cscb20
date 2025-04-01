@@ -131,7 +131,10 @@ def lecture_notes():
 def anonymous_feedback():
     if 'userId' not in session:
         return redirect(url_for('login', message="Please login to use the anonymous feedback."))
-    return render_template('anonymous_feedback.html')
+    
+    allInstructors = User.query.filter_by(accountType='ins').all()
+
+    return render_template('anonymous_feedback.html', all_instructors = allInstructors)
 
 @app.route('/course-team')
 def course_team():
@@ -194,7 +197,7 @@ def api_logout():
     session.pop('userInfo', None)
     return {'message': 'Logout successful'}, 200
 
-@app.route('/api/regrade-request', methods=['POST'])
+@app.route('/api/regrade-request', methods=['PUT'])
 def api_regrade_request():
     data = request.json
 
@@ -213,6 +216,19 @@ def api_regrade_request():
     db.session.add(remarkRequestObj)
     db.session.commit()
     return {'message': 'Regrade request submitted successfully'}, 201
+
+@app.route('/api/feedback', methods=['PUT'])
+def api_feedback():
+    data = request.json
+
+    if not session.get('userId'):
+        return {'error': 'User not logged in'}, 401
+
+    feedbackObj = AnonymousFeedback(instructorId=data['instructorId'], jsonFeedback=data['jsonFeedback'], createdAt=int(time.time()))
+    
+    db.session.add(feedbackObj)
+    db.session.commit()
+    return {'message': 'Feedback submitted successfully'}, 201
 
 if __name__ == '__main__':
     with app.app_context():

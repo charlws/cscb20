@@ -281,12 +281,6 @@ footer p {
     }
 }
 
-.feedback-form {
-    width: calc(100% - 32px);
-    height: 160px;
-    font-size: 16px;
-}
-
 button {
     border-radius: 4px;
     padding: 8px 16px;
@@ -327,6 +321,12 @@ textarea {
     border: none;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     margin: 8px 0 12px 0;
+}
+
+textarea {
+    width: calc(100% - 32px);
+    height: 80px;
+    font-size: 16px;
 }
 
 label {

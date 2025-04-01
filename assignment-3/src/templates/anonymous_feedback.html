@@ -4,79 +4,60 @@
 Anonymous Feedback
 {% endblock %}
 
+{% block head %}
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
+{% endblock %}
+
 {% block content %}
-
-<!--Instructor view-->
-{%if session['userInfo']['accountType'] == 'ins' %}
-<div class="main-container flex-container">
-    <div class="flex-left">
-        <div class="container">
-            <div class="container-header">
-                <h2>Feedback recieved</h2>
-            </div>
-            <div class="container-content">
-
-            </div>
+<div class="main-container">
+    <div class="container">
+        <div class="container-header">
+            <h2>Anonymous Feedback</h2>
         </div>
-    </div>
-</div>
-{% endif %}
-
-
-<!--Student view-->
-{%if session['userInfo']['accountType'] == 'stu' %}
-<div class="main-container flex-container">
-    <div class="flex-left">
-        <div class="container">
-            <div class="container-header">
-                <h2>Anonymous Feedback</h2>
+        <div class="container-content">
+            <div>
+                <label for="instructor">Select your instructor:</label><br />
+                <select id="feedback-instructor-id" name="instructor" class="fullwidth" required>
+                    {% for instructor in all_instructors %}
+                        <option value="{{ instructor.userId }}">{{ instructor.displayName }}</option>
+                    {% endfor %}
+                </select>
             </div>
-            <div class="container-content">
-                <div class="question">
-                <span class="quesiton-tile">What do you like about the instructors teaching?</span>
-                    <form>
-                        <textarea class="feedback-form" name="ins_likes"
+            <div>
+                <label for="ins-likes">What do you like about the instructors teaching?</label><br />
+                <form>
+                    <textarea name="ins-likes" id="feedback-ins-likes"
                         placeholder="Please enter your feedback here"></textarea><br>
-                    </form>
-                </div>
-                <div class="question">
-                    <span class="quesiton-tile">What do you recommend the instructor to do to improve their teaching?</span>
-                        <form>
-                            <textarea class="feedback-form" name="ins_suggestions"
-                            placeholder="Please enter your feedback here"></textarea><br>
-                        </form>
-                    </div>
-                <div class="question">
-                <span class="quesiton-tile">What do you like about the labs?</span>
-                    <form>
-                        <textarea class="feedback-form" name="labs_likes"
+                </form>
+            </div>
+            <div>
+                <label for="ins-suggestions">What do you recommend the instructor to do to improve their
+                    teaching?</label><br />
+                <form>
+                    <textarea name="ins-suggestions" id="feedback-ins-suggestions"
                         placeholder="Please enter your feedback here"></textarea><br>
-                    </form>
-                </div>
-                <div class="question">
-                    <span class="quesiton-tile">What do you recommend the lab instructors to do to improve their lab teaching?</span>
-                        <form>
-                            <textarea class="feedback-form" name="labs_suggestions"
-                            placeholder="Please enter your feedback here"></textarea><br>
-                        </form>
-                    </div>
+                </form>
+            </div>
+            <div>
+                <label for="labs-likes">What do you like about the labs?</label><br />
+                <form>
+                    <textarea name="labs-likes" id="feedback-labs-likes"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                </form>
+            </div>
+            <div>
+                <label for="labs-suggestions">What do you recommend the lab instructors to do to improve their lab
+                    teaching?</label><br />
+                <form>
+                    <textarea name="labs-suggestions" id="feedback-labs-suggestions"
+                        placeholder="Please enter your feedback here"></textarea><br>
+                </form>
             </div>
             <div style="display:flex;justify-content:end;margin-top:8px;">
-                <button class="button" type="submit">Submit Feedback</button>
+                <button id="feedback-submit-button" class="button" type="submit">Submit Feedback</button>
             </div>
-        </div>
-    </div>
-    <div class="flex-right">
-        <div class="container">
-            <div class="container-header">
-                <h2>Remark</h2>
-            </div>
-            <div class="container-content">
-                <p>We'd love to hear from you! Your opinions make us improve.</p>
-                <p>All feedbacks are anonymous.</p>
-            </div>
+            <p id="feedback-message" class="hidden">{{ message }}</p>
         </div>
     </div>
 </div>
-{% endif %}
 {% endblock %}
