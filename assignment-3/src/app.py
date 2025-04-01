@@ -88,15 +88,19 @@ def index():
 @app.route('/grades')
 def grades():
     if 'userId' not in session:
-        return redirect(url_for('login', message="Please login to access the syllabus."))
-    current_user_id = session.get('user_id')
+        return redirect(url_for('login', message="Please login to access the grades."))
+    current_user_id = session.get('userId')
     current_time = int(time.time())
     if session.get('userInfo', {}).get('accountType') == 'stu':
         student_marks = db.session.query(Mark, MarkGroup)\
-        .join(MarkGroup, Mark.markGroupId == MarkGroup.groupId)\
-        .filter(Mark.userId == current_user_id)\
-        .all()
+                            .join(MarkGroup, Mark.markGroupId == MarkGroup.groupId)\
+                            .filter(Mark.userId == current_user_id)\
+                            .all()
         return render_template('grades.html', student_marks = student_marks, current_time = current_time)
+
+@app.route('/grades/{markId}/regrade')
+def request_regrade(markId):
+    pass
 
 @app.route('/syllabus')
 def syllabus():
@@ -205,13 +209,13 @@ if __name__ == '__main__':
         if not MarkGroup.query.first():
             assignment1 = MarkGroup(title='Assignment 1', maxGrade=15, 
                                   createdAt=int(time.time()), 
-                                  releasedAt=int(time.time()) + 86400)
+                                  releasedAt=int(time.time()) - 86400 * 3)
             midterm = MarkGroup(title='Midterm', maxGrade=25, 
                                createdAt=int(time.time()), 
-                               releasedAt=int(time.time()) + 172800)
+                               releasedAt=int(time.time()) - 86400 * 2)
             final = MarkGroup(title='Final Exam', maxGrade=40, 
                              createdAt=int(time.time()), 
-                             releasedAt=int(time.time()) + 259200)
+                             releasedAt=int(time.time()) - 86400)
             db.session.add_all([assignment1, midterm, final])
             db.session.commit()
 
