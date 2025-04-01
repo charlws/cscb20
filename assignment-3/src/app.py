@@ -215,7 +215,7 @@ if __name__ == '__main__':
                                releasedAt=int(time.time()) - 86400 * 2)
             final = MarkGroup(title='Final Exam', maxGrade=40, 
                              createdAt=int(time.time()), 
-                             releasedAt=int(time.time()) - 86400)
+                             releasedAt=int(time.time()) + 86400)
             db.session.add_all([assignment1, midterm, final])
             db.session.commit()
 
