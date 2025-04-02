@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% from 'components/modal_manage_regrade_request.html' import modal_manage_regrade_request %}
+
+{% block title %} Grades {% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/grades.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container">
+    <div class="container">
+        <div class="container-header space-between">
+            <h2>Remark Requests</h2>
+            <p><a href="/grades" class="no-decoration">Return to grades</a></p>
+        </div>
+        <div class="container-content">
+            <div style="display:flex;justify-content:space-between;">
+                <div>
+                    <label for="mark-group-id">Evaluation:</label>
+                    <select id="mark-group-id" name="mark-group-id">
+                        <option value="-1" selected>All</option>
+                        {% for mark_group in all_mark_groups %}
+                        <option value="{{ mark_group.groupId }}">{{
+                            mark_group.title }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="remark-status" style="margin-left:8px;">Status:</label>
+                    <select id="remark-status" name="remark-status">
+                        <option value="All" selected>All</option>
+                        <option value="Approved">Approved</option>
+                        <option value="Rejected">Rejected</option>
+                        <option value="Pending">Pending</option>
+                    </select>
+                </div>
+                <div>
+                    <input id="filter-student" type="text" name="filter-student" placeholder="Student Name / ID">
+                </div>
+            </div>
+            <div class="grades-table">
+                <div class="table-header">
+                    <div class="header-cell">Evaluation</div>
+                    <div class="header-cell">Student</div>
+                    <div class="header-cell">Grade</div>
+                    <div class="header-cell">Reason</div>
+                    <div class="header-cell">Status</div>
+                    <div class="header-cell">Action</div>
+                </div>
+
+                {% for mark in instructor_marks %}
+                {% if mark[3] %}
+                <div class="table-row mark-group-row" data-mark-id="{{ mark[2].markId }}"
+                    data-mark-group-id="{{ mark[1].groupId }}" data-student-name="{{ mark[0].displayName }}"
+                    data-student-id="{{ mark[0].studentId }}" data-remark-status="{{ mark[3].status }}">
+                    <div class="table-cell">
+                        <h3>{{ mark[1].title }}</h3>
+                    </div>
+                    <div class="table-cell">
+                        <p>{{ mark[0].displayName }}</p>
+                    </div>
+                    <div class="table-cell">
+                        <p><span class="grade" data-mark-id="{{ mark[2].markId }}">{{mark[2].grade * 100 //
+                                mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})</span></p>
+                    </div>
+                    <div class="table-cell">
+                        <p class="truncate-text">{{ mark[3].reason }}</p>
+                    </div>
+                    <div class="table-cell">
+                        <p><span data-request-id="{{ mark[3].requestId }}">{{ mark[3].status }}</span></p>
+                    </div>
+                    <div class="table-cell">
+                        <button class="view-remark-request-button" data-mark-id="{{ mark[2].markId }}"
+                            data-request-id="{{ mark[3].requestId }}" data-student-name="{{ mark[0].displayName }}"
+                            data-evaluation-title="{{ mark[1].title }}" data-grade="{{ mark[2].grade }}"
+                            data-max-grade="{{ mark[1].maxGrade }}" data-reason="{{ mark[3].reason }}"
+                            data-status="{{ mark[3].status }}">Manage</button>
+                    </div>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{{ modal_manage_regrade_request() }}
+{% endblock %}

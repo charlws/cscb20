@@ -12,13 +12,13 @@
     <div class="flex-left">
         <div class="container">
             <div class="container-header">
-                <h2>Student grades</h2>
+                <h2>Student Grades</h2>
             </div>
             <div class="container-content">
                 <div style="display:flex;justify-content:space-between;">
                     <div>
-                        <label for="mark-group">Evaluation:</label>
-                        <select id="mark-group-id" name="mark-group">
+                        <label for="mark-group-id">Evaluation:</label>
+                        <select id="mark-group-id" name="mark-group-id">
                             <option value="-1" selected>All</option>
                             {% for mark_group in all_mark_groups %}
                             <option value="{{ mark_group.groupId }}">{{
