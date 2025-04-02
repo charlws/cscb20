@@ -94,6 +94,7 @@
                 <p>ProTip: You can filter the student and evaluation on the left, and manage the regrade requests if
                     applicable.</p>
                 <p style="font-size:12px;margin-top:8px;">*Note: If you looked at our database schema, we used a MarkGroup table to identify the evaluation a mark belongs to. Currently, the records in MarkGroup is hard-coded and we decided to not provide a client-side functionality to create a MarkGroup because we are close to the submission deadline and are not planning to add even more out-of-scope functionalities.</p>
+                <p style="font-size:12px;margin-top:8px;">*Another note: We also have a "releasedAt" attribute for each MarkGroup but we decided not to provide any "write" functionality at client-side due to the extra work. However, "read" is supported (the "Not yet released" in student view). The "releasedAt" is currently hard-coded when the MarkGroup is created.</p>
             </div>
         </div>
     </div>

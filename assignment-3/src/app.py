@@ -292,7 +292,8 @@ def api_mark():
 
         db.session.add(markObj)
         db.session.commit()
-        return {'message': 'Mark added successfully', 'markId': markObj.markId}, 201
+        return {'message': 'Marks updated successfully', 'markId': markObj.markId}, 201
+        # message format as requested by question statement
     
     elif request.method == 'PATCH':
         markObj = Mark.query.filter_by(markId=data['markId']).first()
@@ -303,7 +304,7 @@ def api_mark():
         markObj.updatedAt = int(time.time())
 
         db.session.commit()
-        return {'message': 'Mark updated successfully'}, 200
+        return {'message': 'Marks updated successfully'}, 200
     
     elif request.method == 'DELETE':
         markObj = Mark.query.filter_by(markId=data['markId']).first()
@@ -312,7 +313,7 @@ def api_mark():
         
         db.session.delete(markObj)
         db.session.commit()
-        return {'message': 'Mark deleted successfully'}, 200
+        return {'message': 'Marks updated successfully'}, 200
 
 @app.route('/api/feedback', methods=['PUT'])
 def api_feedback():
@@ -341,38 +342,63 @@ if __name__ == '__main__':
             db.session.commit()
         
         if not MarkGroup.query.first():
-            assignment1 = MarkGroup(title='Assignment 1', maxGrade=15, 
+            assignment1 = MarkGroup(title='Assignment 1', maxGrade=100, 
                                   createdAt=int(time.time()), 
                                   releasedAt=int(time.time()) - 86400 * 3)
-            midterm = MarkGroup(title='Midterm', maxGrade=25, 
+            assignment2 = MarkGroup(title='Assignment 2', maxGrade=100, 
+                                  createdAt=int(time.time()), 
+                                  releasedAt=int(time.time()) - 86400 * 3)
+            assignment3 = MarkGroup(title='Assignment 3', maxGrade=100, 
+                                  createdAt=int(time.time()), 
+                                  releasedAt=int(time.time()) + 86400 * 3)
+            tutorial1 = MarkGroup(title='Tutorial 1', maxGrade=10, 
+                                  createdAt=int(time.time()), 
+                                  releasedAt=int(time.time()) - 86400 * 3)
+            tutorial2 = MarkGroup(title='Tutorial 2', maxGrade=10, 
+                                  createdAt=int(time.time()), 
+                                  releasedAt=int(time.time()) - 86400 * 3)
+            tutorial3 = MarkGroup(title='Tutorial 3', maxGrade=10, 
+                                  createdAt=int(time.time()), 
+                                  releasedAt=int(time.time()) - 86400 * 3)
+            tutorial4 = MarkGroup(title='Tutorial 4', maxGrade=10, 
+                                  createdAt=int(time.time()), 
+                                  releasedAt=int(time.time()) - 86400 * 3)
+            midterm = MarkGroup(title='Midterm', maxGrade=50, 
                                createdAt=int(time.time()), 
                                releasedAt=int(time.time()) - 86400 * 2)
-            final = MarkGroup(title='Final Exam', maxGrade=40, 
+            final = MarkGroup(title='Final Exam', maxGrade=80, 
                              createdAt=int(time.time()), 
                              releasedAt=int(time.time()) + 86400)
-            db.session.add_all([assignment1, midterm, final])
+            db.session.add_all([
+                assignment1, assignment2, assignment3,
+                tutorial1, tutorial2, tutorial3, tutorial4,
+                midterm, final
+            ])
             db.session.commit()
 
         if not Mark.query.first():
-            
-            stu1_assignment1 = Mark(userId=1, markGroupId=1, grade=12,
+            stu1_assignment1 = Mark(userId=1, markGroupId=1, grade=97,
                                   updatedAt=int(time.time()))
-            stu1_midterm = Mark(userId=1, markGroupId=2, grade=20,
+            stu1_tutorial1 = Mark(userId=1, markGroupId=4, grade=10,
+                                  updatedAt=int(time.time()))
+            stu1_midterm = Mark(userId=1, markGroupId=8, grade=46,
                                updatedAt=int(time.time()))
-            stu1_final = Mark(userId=1, markGroupId=3, grade=32, 
+            stu1_final = Mark(userId=1, markGroupId=9, grade=70, 
                             updatedAt=int(time.time()))
             
             
-            stu2_assignment1 = Mark(userId=2, markGroupId=1, grade=14,
+            stu2_assignment1 = Mark(userId=2, markGroupId=1, grade=98,
                                    updatedAt=int(time.time()))
-            stu2_midterm = Mark(userId=2, markGroupId=2, grade=22,
+            stu2_tutorial1 = Mark(userId=2, markGroupId=4, grade=10,
+                                      updatedAt=int(time.time()))
+            stu2_midterm = Mark(userId=2, markGroupId=8, grade=37,
                               updatedAt=int(time.time()))
-            stu2_final = Mark(userId=2, markGroupId=3, grade=35,
+            stu2_final = Mark(userId=2, markGroupId=9, grade=75,
                             updatedAt=int(time.time()))
             
             db.session.add_all([
-                stu1_assignment1, stu1_midterm, stu1_final,
-                stu2_assignment1, stu2_midterm, stu2_final
+                stu1_assignment1, stu1_tutorial1, stu1_midterm, stu1_final,
+                stu2_assignment1, stu2_tutorial1, stu2_midterm, stu2_final
             ])
             db.session.commit()
 
