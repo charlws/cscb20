@@ -43,4 +43,5 @@ CREATE TABLE IF NOT EXISTS anonymousFeedback (feedbackId INTEGER PRIMARY KEY AUT
         instructorId INTEGER NOT NULL, -- userId of instructor
         jsonFeedback TEXT NOT NULL, -- the qa form (we use json rather than separate questions)
         createdAt INTEGER NOT NULL,
+        status CHAR(1) NOT NULL,  -- R: read, U: Unread
         FOREIGN KEY (instructorId) REFERENCES users(userId));
