@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% from 'components/modal_manage_regrade_request.html' import modal_manage_regrade_request %}
 {% from 'components/modal_edit_mark.html' import modal_edit_mark %}
+{% from 'components/modal_enter_mark.html' import modal_enter_mark %}
 
 {% block title %} Grades {% endblock %}
 
@@ -31,7 +32,7 @@
                         <input id="filter-student" type="text" name="filter-student" placeholder="Student Name / ID">
                     </div>
                 </div>
-                <div class="grades-table">
+                <div class="grades-table" id="grades-table">
                     <div class="table-header">
                         <div class="header-cell">Evaluation</div>
                         <div class="header-cell">Student</div>
@@ -92,12 +93,9 @@
                 <hr />
                 <p>More actions:</p>
                 <div class="flex">
+                    <button id="enter-mark-button">Enter Mark</button>
                     <button id="create-evaluation-button">Create Evaluation</button>
                     <button id="delete-evaluation-button" class="button-error">Delete Evaluation</button>
-                </div>
-                <div class="flex mt-8">
-                    <button id="create-mark-button">Enter Mark</button>
-                    <button id="delete-mark-button" class="button-error">Delete Mark</button>
                 </div>
             </div>
         </div>
@@ -106,4 +104,5 @@
 
 {{ modal_manage_regrade_request() }}
 {{ modal_edit_mark() }}
+{{ modal_enter_mark(all_mark_groups, all_students) }}
 {% endblock %}

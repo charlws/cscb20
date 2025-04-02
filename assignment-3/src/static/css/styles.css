@@ -382,7 +382,7 @@ label {
     font-weight: bold;
 }
 
-.fullwidth {
+.fullwidth, .full-width {
     box-sizing: border-box;
     width: 100%;
 }
@@ -438,10 +438,22 @@ label {
     border-bottom: none;
 }
 
+.no-border {
+    border: none;
+}
+
 .header-cell,
 .table-cell {
     flex: 1;
     padding: 12px;
+    display: flex;
+    align-items: center;
+}
+
+.compact-header-cell,
+.compact-table-cell {
+    flex: 1;
+    padding: 0 4px;
     display: flex;
     align-items: center;
 }

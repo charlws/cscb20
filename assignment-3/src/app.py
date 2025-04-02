@@ -100,6 +100,7 @@ def grades():
         return render_template('grades_student.html', student_marks = student_marks, current_time = current_time)
     elif session.get('userInfo', {}).get('accountType') == 'ins':
         all_mark_groups = MarkGroup.query.all()
+        all_students = User.query.filter_by(accountType='stu').all()
 
         instructor_marks = db.session.query(User, MarkGroup, Mark, RemarkRequest)\
                                 .join(Mark, User.userId == Mark.userId)\
@@ -110,7 +111,7 @@ def grades():
                                 ))\
                                 .order_by(MarkGroup.groupId.desc(), Mark.grade.desc())\
                                 .all()
-        return render_template('grades_instructor.html', instructor_marks = instructor_marks, all_mark_groups = all_mark_groups, current_time = current_time)
+        return render_template('grades_instructor.html', instructor_marks = instructor_marks, all_mark_groups = all_mark_groups, all_students = all_students,  current_time = current_time)
 
 @app.route('/grades/remark')
 def grades_remark():
@@ -129,7 +130,7 @@ def grades_remark():
                                 ))\
                                 .order_by(MarkGroup.groupId.desc(), Mark.grade.desc())\
                                 .all()
-        return render_template('grades_remark.html', instructor_marks = instructor_marks, all_mark_groups = all_mark_groups, current_time = current_time, regrades_only = True)
+        return render_template('grades_remark.html', instructor_marks = instructor_marks, all_mark_groups = all_mark_groups,current_time = current_time, regrades_only = True)
     else:
         return redirect(url_for('grades'))
 
@@ -283,11 +284,15 @@ def api_mark():
         return {'error': 'Only instructors can update marks'}, 403
 
     if request.method == 'PUT':
+        existingMark = Mark.query.filter_by(markGroupId=data['markGroupId'], userId=data['userId']).first()
+        if existingMark:
+            return {'error': 'Mark already exists for this student'}, 400
+
         markObj = Mark(userId=data['userId'], markGroupId=data['markGroupId'], grade=data['grade'], updatedAt=int(time.time()))
-        
+                
         db.session.add(markObj)
         db.session.commit()
-        return {'message': 'Mark added successfully'}, 201
+        return {'message': 'Mark added successfully', 'markId': markObj.markId}, 201
     
     elif request.method == 'PATCH':
         markObj = Mark.query.filter_by(markId=data['markId']).first()

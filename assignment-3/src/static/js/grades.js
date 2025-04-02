@@ -208,4 +208,77 @@ $(document).ready(() => {
         });
     };
     $("#edit-submit-button").on('click', handleEditMark);
+
+    $("#enter-mark-button").on('click', (e) => {
+        $("#enter-mark-message").text("");
+        $("#enter-mark-modal").fadeIn(duration = 200);
+        $(".modal-backdrop").fadeIn(duration = 200);
+    });
+
+    const handleEnterMark = () => {
+        $("#enter-mark-message").text("");
+        $("#enter-mark-message").removeClass("error-message");
+        $("#enter-mark-message").removeClass("success-message");
+
+        const markGroupId = $("#enter-mark-group-id").val();
+        const evaluationTitle = $(`.mark-group-option[value="${markGroupId}"]`).data('evaluation-title');
+        const maxGrade = $(`.mark-group-option[value="${markGroupId}"]`).data('max-grade');
+        const studentId = $("#enter-mark-student-id").val();
+        // NOTE: This may be confusing but this refers to the "userId" of the student!
+        const studentName = $(`.student-option[value="${studentId}"]`).data('student-name');
+        const mark = $("#enter-mark-mark").val();
+        if (!markGroupId || !studentId || !mark) {
+            $("#enter-mark-message").text("Please fill all the fields.");
+            $("#enter-mark-message").addClass("error-message");
+            $("#enter-mark-message").fadeIn();
+            return;
+        }
+
+        $.ajax({
+            type: "PUT",
+            url: "/api/mark",
+            data: JSON.stringify({ markGroupId, userId: studentId, grade: mark }),
+            contentType: "application/json",
+            success: (data) => {
+                $("#enter-mark-message").text(data.message);
+                $("#enter-mark-message").addClass("success-message");
+                $("#enter-mark-message").fadeIn();
+
+                $("#enter-mark-group-id").val("");
+                $("#enter-mark-student-id").val("");
+                $("#enter-mark-mark").val("");
+                const gradeText = `${parseInt(mark * 100 / maxGrade)}% (${mark} / ${maxGrade})`;
+                const newRow = `
+                    <div class="table-row mark-group-row" data-mark-group-id="${markGroupId}"
+                        data-student-name="${studentName}" data-student-id="${studentId}">
+                        <div class="table-cell">
+                            <h3>${evaluationTitle}</h3>
+                        </div>
+                        <div class="table-cell">
+                            <p>${studentName}</p>
+                        </div>
+                        <div class="table-cell">
+                            <p>
+                                <span class="grade" data-mark-id="${data.markId}">${gradeText}</span>
+                                (<a class="edit-mark-button" href="#" data-mark-id="${data.markId}"
+                                    data-student-name="${studentName}"
+                                    data-evaluation-title="${evaluationTitle}" data-grade="${mark}"
+                                    data-max-grade="${maxGrade}">Edit</a>)
+                            </p>
+                        </div>
+                        <div class="table-cell">
+                            <p>N/A</p>
+                        </div>
+                    </div>`;
+                $("#grades-table").append(newRow);
+            },
+            error: (error) => {
+                const data = JSON.parse(error.responseText);
+                $("#enter-mark-message").text(data.error);
+                $("#enter-mark-message").addClass("error-message");
+                $("#enter-mark-message").fadeIn();
+            }
+        });
+    };
+    $("#enter-mark-submit-button").on('click', handleEnterMark);
 });
