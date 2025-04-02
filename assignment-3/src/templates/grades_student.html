@@ -14,12 +14,12 @@
         <div class="no-flex">
             <div class="container">
                 <div class="container-header">
-                    <h2>Grades for {{ session['userInfo']['displayName'] }}</h2>
+                    <h2>Marks for {{ session['userInfo']['displayName'] }}</h2>
                 </div>
                 <div class="container-content">
-                    <p>You can view your grades here and submit regrade requests, if necessary.</p>
-                    <p>Please note that your work will be re-evaulated entirely and we may add and/or deduct marks when you submit a regrade request.</p>
-                    <p>You can only submit a regrade request once and you may not edit it once you submitted it.</p>
+                    <p>You can view your marks here and submit remark requests, if necessary.</p>
+                    <p>Please note that your work will be re-evaulated entirely and we may add and/or deduct marks when you submit a remark request.</p>
+                    <p>You can only submit a remark request once and you may not edit it once you submitted it.</p>
                 </div>
             </div>
         </div>
@@ -35,8 +35,8 @@
                     <div class="grades-table">
                         <div class="table-header">
                             <div class="header-cell">Evaluation</div>
-                            <div class="header-cell">Grade</div>
-                            <div class="header-cell">Regrade</div>
+                            <div class="header-cell">Mark</div>
+                            <div class="header-cell">Remark</div>
                         </div>
                         {% for mark in student_marks %}
                             {% if ("assignment" in mark[1].title.lower()) %}
@@ -57,8 +57,8 @@
                     <div class="grades-table">
                         <div class="table-header">
                             <div class="header-cell">Evaluation</div>
-                            <div class="header-cell">Grade</div>
-                            <div class="header-cell">Regrade</div>
+                            <div class="header-cell">Mark</div>
+                            <div class="header-cell">Remark</div>
                         </div>
                         {% for mark in student_marks %}
                             {% if ("lab" in mark[1].title.lower() or "tutorial" in mark[1].title.lower()) %}
@@ -79,8 +79,8 @@
                     <div class="grades-table">
                         <div class="table-header">
                             <div class="header-cell">Evaluation</div>
-                            <div class="header-cell">Grade</div>
-                            <div class="header-cell">Regrade</div>
+                            <div class="header-cell">Mark</div>
+                            <div class="header-cell">Remark</div>
                         </div>
                         {% for mark in student_marks %}
                             {% if ("exam" in mark[1].title.lower() or "midterm" in mark[1].title.lower() or "final" in mark[1].title.lower()) %}
