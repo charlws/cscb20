@@ -244,6 +244,10 @@ def api_regrade_request():
         
         remarkRequest.status = newStatus
         remarkRequest.updatedAt = int(time.time())
+
+        markObj = Mark.query.filter_by(markId=remarkRequest.markId).first()
+        markObj.grade = data['newGrade']
+
         db.session.commit()
         return {'message': 'Regrade request status updated successfully'}, 200
 

@@ -10,8 +10,8 @@ $(document).ready(() => {
         $("#regrade-message").text("");
         $("#regrade-reason").val("");
         $("#regrade-submit-button").removeAttr("disabled");
-        $("#regrade-modal").fadeIn(duration=200);
-        $(".modal-backdrop").fadeIn(duration=200);
+        $("#regrade-modal").fadeIn(duration = 200);
+        $(".modal-backdrop").fadeIn(duration = 200);
     });
 
     const handleSubmitRegradeRequest = () => {
@@ -80,6 +80,7 @@ $(document).ready(() => {
         const el = $(e.currentTarget);
         viewRemarkId = el.data('request-id');
         viewRemarkData = {
+            markId: el.data('mark-id'),
             studentName: el.data('student-name'),
             evaluationTitle: el.data('evaluation-title'),
             grade: el.data('grade'),
@@ -91,14 +92,16 @@ $(document).ready(() => {
         $("#regrade-student-name").text(viewRemarkData.studentName);
         $("#regrade-evaluation-title").text(viewRemarkData.evaluationTitle);
         $("#regrade-grade").text(`${parseInt(viewRemarkData.grade * 100 / viewRemarkData.maxGrade)}% (${viewRemarkData.grade} / ${viewRemarkData.maxGrade})`);
+        $("#regrade-new-grade").val(viewRemarkData.grade);
         $("#regrade-status").text(viewRemarkData.status);
         $("#regrade-reason").text(viewRemarkData.reason);
-        $("#manage-regrade-modal").fadeIn(duration=200);
-        $(".modal-backdrop").fadeIn(duration=200);
+        $("#manage-regrade-modal").fadeIn(duration = 200);
+        $(".modal-backdrop").fadeIn(duration = 200);
     });
 
     const handleRegradeRequestManage = (e) => {
         const status = $(e.currentTarget).data('status');
+        const newGrade = $("#regrade-new-grade").val();
         $("#regrade-message").text("");
         $("#regrade-message").removeClass("error-message");
         $("#regrade-message").removeClass("success-message");
@@ -111,16 +114,21 @@ $(document).ready(() => {
         $.ajax({
             type: "PATCH",
             url: "/api/regrade-request",
-            data: JSON.stringify({ requestId: viewRemarkId, status: status }),
+            data: JSON.stringify({ requestId: viewRemarkId, status: status, newGrade: newGrade }),
             contentType: "application/json",
             success: (data) => {
                 $("#regrade-message").text(data.message);
                 $("#regrade-message").addClass("success-message");
                 $("#regrade-message").fadeIn();
 
+                viewRemarkData.status = status;
+                viewRemarkData.grade = newGrade;
+
+                const gradeText = `${parseInt(viewRemarkData.grade * 100 / viewRemarkData.maxGrade)}% (${viewRemarkData.grade} / ${viewRemarkData.maxGrade})`;
                 $("#regrade-status").text(status);
-                const span = $(`span[data-request-id="${viewRemarkId}"]`);
-                span.text(status);
+                $("#regrade-grade").text(gradeText);
+                $(`span[data-request-id="${viewRemarkId}"]`).text(status);
+                $(`span.grade[data-mark-id="${viewRemarkData.markId}"]`).text(gradeText);
             },
             error: (error) => {
                 const data = JSON.parse(error.responseText);

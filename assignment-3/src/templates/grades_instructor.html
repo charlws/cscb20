@@ -48,14 +48,14 @@
                             <p>{{ mark[0].displayName }}</p>
                         </div>
                         <div class="table-cell">
-                            <p>{{mark[2].grade * 100 // mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})
-                            </p>
+                            <p><span class="grade" data-mark-id="{{ mark[2].markId }}">{{mark[2].grade * 100 // mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})</span></p>
                         </div>
                         <div class="table-cell">
                             {% if mark[3] %}
                             <p>
                                 <span data-request-id="{{ mark[3].requestId }}">{{ mark[3].status }}</span>
                                 (<a class="view-remark-request-button" href="#"
+                                    data-mark-id="{{ mark[2].markId }}"
                                     data-request-id="{{ mark[3].requestId }}"
                                     data-student-name="{{ mark[0].displayName }}"
                                     data-evaluation-title="{{ mark[1].title }}" data-grade="{{ mark[2].grade }}"
@@ -79,7 +79,8 @@
             </div>
             <div class="container-content">
                 <p>Welcome back, {{ session['userInfo']['displayName'] }}!</p>
-                <p>Click <a href="/grades/remark">here to view remark requests</a></p>
+                <p>To view ALL remark requests, please <a href="/grades/remark">click here</a>.</p>
+                <p>ProTip: You can filter the student and evaluation on the left, and manage the regrade requests if applicable.</p>
             </div>
         </div>
     </div>
