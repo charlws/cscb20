@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% from 'components/modal_manage_regrade_request.html' import modal_manage_regrade_request %}
+{% from 'components/modal_edit_mark.html' import modal_edit_mark %}
 
 {% block title %} Grades {% endblock %}
 
@@ -60,8 +61,14 @@
                         <p>{{ mark[0].displayName }}</p>
                     </div>
                     <div class="table-cell">
-                        <p><span class="grade" data-mark-id="{{ mark[2].markId }}">{{mark[2].grade * 100 //
-                                mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})</span></p>
+                        <p>
+                            <span class="grade" data-mark-id="{{ mark[2].markId }}">{{mark[2].grade * 100 //
+                                mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})</span>
+                            (<a class="edit-mark-button" href="#" data-mark-id="{{ mark[2].markId }}"
+                                data-student-name="{{ mark[0].displayName }}"
+                                data-evaluation-title="{{ mark[1].title }}" data-grade="{{ mark[2].grade }}"
+                                data-max-grade="{{ mark[1].maxGrade }}">Edit</a>)
+                        </p>
                     </div>
                     <div class="table-cell">
                         <p class="truncate-text">{{ mark[3].reason }}</p>
@@ -85,4 +92,5 @@
 </div>
 
 {{ modal_manage_regrade_request() }}
+{{ modal_edit_mark() }}
 {% endblock %}

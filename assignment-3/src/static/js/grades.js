@@ -2,6 +2,8 @@ $(document).ready(() => {
     let regradeMarkId = null;
     let viewRemarkId = null; // request-id
     let viewRemarkData = null; // json data
+    let editMarkId = null; // mark id
+    let editMarkData = null; // json data
 
     $(".regrade-button").on('click', (e) => {
         regradeMarkId = $(e.currentTarget).data('mark-id');
@@ -98,6 +100,7 @@ $(document).ready(() => {
         $("#regrade-new-grade").val(viewRemarkData.grade);
         $("#regrade-status").text(viewRemarkData.status);
         $("#regrade-reason").text(viewRemarkData.reason);
+        $("#regrade-message").text("");
         $("#manage-regrade-modal").fadeIn(duration = 200);
         $(".modal-backdrop").fadeIn(duration = 200);
     });
@@ -133,6 +136,7 @@ $(document).ready(() => {
                 $(`span[data-request-id="${viewRemarkId}"]`).text(status);
                 $(`span.grade[data-mark-id="${viewRemarkData.markId}"]`).text(gradeText);
                 $(`div.mark-group-row[data-mark-id="${viewRemarkData.markId}"]`).data('remark-status', status);
+                $(`a[data-mark-id="${viewRemarkData.markId}"]`).data('grade', newGrade);
                 $(`button[data-mark-id="${viewRemarkData.markId}"]`).data('grade', newGrade);
                 $(`button[data-mark-id="${viewRemarkData.markId}"]`).data('status', status);
                 handleMarkFilter();
@@ -146,4 +150,62 @@ $(document).ready(() => {
         });
     };
     $(".manage-regrade-button").on('click', handleRegradeRequestManage);
+
+    $(".edit-mark-button").on('click', (e) => {
+        const el = $(e.currentTarget);
+        editMarkId = el.data('mark-id');
+        editMarkData = {
+            studentName: el.data('student-name'),
+            evaluationTitle: el.data('evaluation-title'),
+            grade: el.data('grade'),
+            maxGrade: el.data('max-grade')
+        };
+
+        $("#edit-student-name").text(editMarkData.studentName);
+        $("#edit-evaluation-title").text(editMarkData.evaluationTitle);
+        $("#edit-grade").text(`${parseInt(editMarkData.grade * 100 / editMarkData.maxGrade)}% (${editMarkData.grade} / ${editMarkData.maxGrade})`);
+        $("#edit-new-grade").val(editMarkData.grade);
+        $("#edit-message").text("");
+        $("#edit-mark-modal").fadeIn(duration = 200);
+        $(".modal-backdrop").fadeIn(duration = 200);
+    });
+
+    const handleEditMark = (e) => {
+        const newGrade = $("#edit-new-grade").val();
+        $("#edit-message").text("");
+        $("#edit-message").removeClass("error-message");
+        $("#edit-message").removeClass("success-message");
+
+        if (!editMarkId) {
+            alert("Something went wrong... Please try again.");
+            return;
+        }
+
+        $.ajax({
+            type: "PATCH",
+            url: "/api/mark",
+            data: JSON.stringify({ markId: editMarkId, newGrade }),
+            contentType: "application/json",
+            success: (data) => {
+                $("#edit-message").text(data.message);
+                $("#edit-message").addClass("success-message");
+                $("#edit-message").fadeIn();
+
+                editMarkData.grade = newGrade;
+
+                const gradeText = `${parseInt(editMarkData.grade * 100 / editMarkData.maxGrade)}% (${editMarkData.grade} / ${editMarkData.maxGrade})`;
+                $("#edit-grade").text(gradeText);
+                $(`span[data-mark-id="${editMarkId}"]`).text(gradeText);
+                $(`button[data-mark-id="${editMarkId}"]`).data('grade', newGrade);
+                $(`a[data-mark-id="${editMarkId}"]`).data('grade', newGrade);
+            },
+            error: (error) => {
+                const data = JSON.parse(error.responseText);
+                $("#edit-message").text(data.error);
+                $("#edit-message").addClass("error-message");
+                $("#edit-message").fadeIn();
+            }
+        });
+    };
+    $("#edit-submit-button").on('click', handleEditMark);
 });

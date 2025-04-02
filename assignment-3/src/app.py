@@ -272,6 +272,43 @@ def api_regrade_request():
         db.session.commit()
         return {'message': 'Regrade request status updated successfully'}, 200
 
+@app.route('/api/mark', methods=['PUT', 'PATCH', 'DELETE'])
+def api_mark():
+    data = request.json
+
+    if not session.get('userId'):
+        return {'error': 'User not logged in'}, 401
+    
+    if session['userInfo']['accountType'] != 'ins':
+        return {'error': 'Only instructors can update marks'}, 403
+
+    if request.method == 'PUT':
+        markObj = Mark(userId=data['userId'], markGroupId=data['markGroupId'], grade=data['grade'], updatedAt=int(time.time()))
+        
+        db.session.add(markObj)
+        db.session.commit()
+        return {'message': 'Mark added successfully'}, 201
+    
+    elif request.method == 'PATCH':
+        markObj = Mark.query.filter_by(markId=data['markId']).first()
+        if not markObj:
+            return {'error': 'Invalid mark ID'}, 400
+        
+        markObj.grade = data['newGrade']
+        markObj.updatedAt = int(time.time())
+
+        db.session.commit()
+        return {'message': 'Mark updated successfully'}, 200
+    
+    elif request.method == 'DELETE':
+        markObj = Mark.query.filter_by(markId=data['markId']).first()
+        if not markObj:
+            return {'error': 'Invalid mark ID'}, 400
+        
+        db.session.delete(markObj)
+        db.session.commit()
+        return {'message': 'Mark deleted successfully'}, 200
+
 @app.route('/api/feedback', methods=['PUT'])
 def api_feedback():
     data = request.json
