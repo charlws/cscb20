@@ -1,0 +1,78 @@
+{% extends 'base.html' %}
+
+{% block title %} Grades {% endblock %}
+
+{% block head %}
+<script src="{{ url_for('static', filename='js/grades.js') }}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="main-container flex-container">
+    <div class="flex-left">
+        <div class="container">
+            <div class="container-header">
+                <h2>Student grades</h2>
+            </div>
+            <div class="container-content">
+                <div style="display:flex;justify-content:space-between;">
+                    <div>
+                        <label for="mark-group">Evaluation:</label>
+                        <select id="mark-group-id" name="mark-group">
+                            <option value="-1" selected>All</option>
+                            {% for mark_group in all_mark_groups %}
+                            <option value="{{ mark_group.groupId }}">{{
+                                mark_group.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <input id="filter-student" type="text" name="filter-student" placeholder="Student Name / ID">
+                    </div>
+                </div>
+                <div class="grades-table">
+                    <div class="table-header">
+                        <div class="header-cell">Evaluation</div>
+                        <div class="header-cell">Student</div>
+                        <div class="header-cell">Grade</div>
+                        <div class="header-cell">Remark Request</div>
+                    </div>
+
+                    {% for mark in instructor_marks %}
+                    <div class="table-row mark-group-row" data-mark-group-id="{{ mark[1].groupId }}"
+                        data-student-name="{{ mark[0].displayName }}" data-student-id="{{ mark[0].studentId }}">
+                        <div class="table-cell">
+                            <h3>{{ mark[1].title }}</h3>
+                        </div>
+                        <div class="table-cell">
+                            <p>{{ mark[0].displayName }}</p>
+                        </div>
+                        <div class="table-cell">
+                            <p>{{mark[2].grade * 100 // mark[1].maxGrade}}% ({{ mark[2].grade }}/{{ mark[1].maxGrade }})
+                            </p>
+                        </div>
+                        <div class="table-cell">
+                            {% if mark[3] %}
+                            <p>{{ mark[3].status }} (<a id="view-remark-request-button" href="#">View</a>)</p>
+                            {% else %}
+                            <p>N/A</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="flex-right">
+        <div class="container">
+            <div class="container-header">
+                <h2>Remark Requests</h2>
+            </div>
+            <div class="container-content">
+                <p>Welcome back, {{ session['userInfo']['displayName'] }}!</p>
+                <p>Click <a href="/grades/remark">here to view remark requests</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

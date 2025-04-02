@@ -99,18 +99,18 @@ def grades():
                             .all()
         return render_template('grades_student.html', student_marks = student_marks, current_time = current_time)
     elif session.get('userInfo', {}).get('accountType') == 'ins':
-        instructor_marks = db.session.query(User.displayName, MarkGroup.title, Mark.grade, MarkGroup.maxGrade)\
+        all_mark_groups = MarkGroup.query.all()
+
+        instructor_marks = db.session.query(User, MarkGroup, Mark, RemarkRequest)\
                                 .join(Mark, User.userId == Mark.userId)\
                                 .join(MarkGroup, Mark.markGroupId == MarkGroup.groupId)\
+                                .outerjoin(RemarkRequest, Mark.markId == RemarkRequest.markId)\
                                 .filter(MarkGroup.groupId.in_(
                                     db.session.query(MarkGroup.groupId)
                                 ))\
+                                .order_by(MarkGroup.groupId.desc(), Mark.grade.desc())\
                                 .all()
-        return render_template('student_grades.html', instructor_marks = instructor_marks, current_time = current_time)
-    
-@app.route('/grades/{markId}/regrade')
-def request_regrade(markId):
-    pass
+        return render_template('grades_instructor.html', instructor_marks = instructor_marks, all_mark_groups = all_mark_groups, current_time = current_time)
 
 @app.route('/syllabus')
 def syllabus():

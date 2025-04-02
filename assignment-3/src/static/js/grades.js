@@ -22,7 +22,7 @@ $(document).ready(() => {
             alert("Something went wrong... Please try again.");
             return;
         }
-        if(reason.length <= 50){
+        if (reason.length <= 50) {
             $("#regrade-message").text("Please provide a reason of at least 50 characters.");
             $("#regrade-message").addClass("error-message");
             $("#regrade-message").fadeIn();
@@ -39,7 +39,7 @@ $(document).ready(() => {
                 $("#regrade-message").addClass("success-message");
                 $("#regrade-message").fadeIn();
                 $("#regrade-submit-button").attr("disabled", "disabled");
-                
+
                 const button = $(`.regrade-button[data-mark-id="${regradeMarkId}"]`);
                 button.replaceWith(`<span class="muted">Regrade Requested (Pending)</span>`);
             },
@@ -52,4 +52,25 @@ $(document).ready(() => {
         });
     };
     $("#regrade-submit-button").on('click', handleSubmitRegradeRequest);
+
+    const handleMarkFilter = () => {
+        const selectedMarkGroupId = parseInt($("#mark-group-id").val()) || '';
+        const studentFilter = $("#filter-student").val().toLowerCase().trim();
+
+        $(".mark-group-row").each((_, element) => {
+            const row = $(element);
+            const rowMarkGroupId = parseInt(row.data('mark-group-id')) || '';
+            const rowStudentName = (row.data('student-name') || '').toLowerCase();
+            const rowStudentId = (String(row.data('student-id')) || '');
+
+            const markGroupMatches = !selectedMarkGroupId || selectedMarkGroupId === -1 || rowMarkGroupId === selectedMarkGroupId;
+            const nameMatches = !studentFilter || rowStudentName.includes(studentFilter) || rowStudentId.includes(studentFilter);
+            console.log(`Mark group matches: ${markGroupMatches}, Name matches: ${nameMatches}`);
+
+            row.toggle(markGroupMatches && nameMatches);
+        });
+    };
+    $("#mark-group-id").on('change', handleMarkFilter);
+    $("#filter-student").on('input', handleMarkFilter);
+    handleMarkFilter();
 });
