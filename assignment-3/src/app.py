@@ -166,6 +166,15 @@ def anonymous_feedback():
 
     return render_template('anonymous_feedback.html', all_instructors = allInstructors)
 
+@app.route('/feedback-received')
+def feedback_recieved():
+    if 'userId' not in session:
+        return redirect(url_for('login', message="Please login to use the anonymous feedback."))
+    if session.get('userInfo', {}).get('accountType') == 'ins':
+        instructor_id = session['userInfo']['userId']
+        feedback_list = AnonymousFeedback.query.filter_by(instructorId=instructor_id).all()
+        return render_template('feedback_received.html', feedback_list=feedback_list)
+    
 @app.route('/course-team')
 def course_team():
     if 'userId' not in session:
@@ -278,12 +287,39 @@ def api_feedback():
 
     if not session.get('userId'):
         return {'error': 'User not logged in'}, 401
+    if request.method == 'PUT':
+        if session['userInfo']['accountType'] != 'stu':
+            return {'error': 'Only students can submit feedback'}, 403
 
-    feedbackObj = AnonymousFeedback(instructorId=data['instructorId'], jsonFeedback=data['jsonFeedback'], createdAt=int(time.time()))
-    
-    db.session.add(feedbackObj)
-    db.session.commit()
-    return {'message': 'Feedback submitted successfully'}, 201
+        feedbackObj = AnonymousFeedback(
+            instructorId=data['instructorId'],
+            jsonFeedback=data['jsonFeedback'],
+            status='Unread',
+            createdAt=int(time.time()),
+            updatedAt=int(time.time())
+        )
+        db.session.add(feedbackObj)
+        db.session.commit()
+        return {'message': 'Feedback submitted successfully'}, 201
+
+    elif request.method == 'PATCH':
+        # Instructor updating feedback status
+        if session['userInfo']['accountType'] != 'ins':
+            return {'error': 'Only instructors can update feedback status'}, 403
+        
+        feedback = AnonymousFeedback.query.filter_by(feedbackId=data['feedbackId']).first()
+        if not feedback:
+            return {'error': 'Invalid feedback ID'}, 400
+        
+        newStatus = data['status']
+        if newStatus not in ['Read', 'Unread']:  # Add more statuses if needed
+            return {'error': 'Invalid status'}, 400
+        
+        feedback.status = newStatus
+        feedback.updatedAt = int(time.time())
+
+        db.session.commit()
+        return {'message': 'Feedback status updated successfully'}, 200
 
 if __name__ == '__main__':
     with app.app_context():
