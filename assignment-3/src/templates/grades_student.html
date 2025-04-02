@@ -34,7 +34,7 @@
                         <div class="table-header">
                             <div class="header-cell">Evaluation</div>
                             <div class="header-cell">Grade</div>
-                            <div class="header-cell">Action</div>
+                            <div class="header-cell">Regrade</div>
                         </div>
                         {% for mark in student_marks %}
                             {% if ("assignment" in mark[1].title.lower()) %}
@@ -45,9 +45,13 @@
                                 {% endif %}
                                 <div class="table-cell">
                                     {% if not mark[2] and mark[1].releasedAt <= current_time %}
-                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
-                                    {% elif mark[2] %}
-                                    <span class="muted">Regrade Requested ({{ mark[2].status }})</span>
+                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request</button>
+                                    {% elif mark[2] and mark[2].status == 'Pending' %}
+                                    <span class="muted">Requested (Pending)</span>
+                                    {% elif mark[2] and mark[2].status == 'Approved' %}
+                                    <span class="success-message">Approved</span>
+                                    {% elif mark[2] and mark[2].status == 'Rejected' %}
+                                    <span class="error-message">Rejected</span>
                                     {% else %}
                                     <span class="muted">Not released yet</span>
                                     {% endif %}
@@ -70,7 +74,7 @@
                         <div class="table-header">
                             <div class="header-cell">Evaluation</div>
                             <div class="header-cell">Grade</div>
-                            <div class="header-cell">Action</div>
+                            <div class="header-cell">Regrade</div>
                         </div>
                         {% for mark in student_marks %}
                             {% if ("lab" in mark[1].title.lower() or "tutorial" in mark[1].title.lower()) %}
@@ -81,9 +85,13 @@
                                 {% endif %}
                                 <div class="table-cell">
                                     {% if not mark[2] and mark[1].releasedAt <= current_time %}
-                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
-                                    {% elif mark[2] %}
-                                    <span class="muted">Regrade Requested ({{ mark[2].status }})</span>
+                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request</button>
+                                    {% elif mark[2] and mark[2].status == 'Pending' %}
+                                    <span class="muted">Requested (Pending)</span>
+                                    {% elif mark[2] and mark[2].status == 'Approved' %}
+                                    <span class="success-message">Approved</span>
+                                    {% elif mark[2] and mark[2].status == 'Rejected' %}
+                                    <span class="error-message">Rejected</span>
                                     {% else %}
                                     <span class="muted">Not released yet</span>
                                     {% endif %}
@@ -106,7 +114,7 @@
                         <div class="table-header">
                             <div class="header-cell">Evaluation</div>
                             <div class="header-cell">Grade</div>
-                            <div class="header-cell">Action</div>
+                            <div class="header-cell">Regrade</div>
                         </div>
                         {% for mark in student_marks %}
                             {% if ("exam" in mark[1].title.lower() or "midterm" in mark[1].title.lower() or "final" in mark[1].title.lower()) %}
@@ -117,9 +125,13 @@
                                 {% endif %}
                                 <div class="table-cell">
                                     {% if not mark[2] and mark[1].releasedAt <= current_time %}
-                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request Regrade</button>
-                                    {% elif mark[2] %}
-                                    <span class="muted">Regrade Requested ({{ mark[2].status }})</span>
+                                    <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request</button>
+                                    {% elif mark[2] and mark[2].status == 'Pending' %}
+                                    <span class="muted">Requested (Pending)</span>
+                                    {% elif mark[2] and mark[2].status == 'Approved' %}
+                                    <span class="success-message">Approved</span>
+                                    {% elif mark[2] and mark[2].status == 'Rejected' %}
+                                    <span class="error-message">Rejected</span>
                                     {% else %}
                                     <span class="muted">Not released yet</span>
                                     {% endif %}

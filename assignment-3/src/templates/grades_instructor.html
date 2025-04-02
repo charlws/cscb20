@@ -52,7 +52,15 @@
                         </div>
                         <div class="table-cell">
                             {% if mark[3] %}
-                            <p>{{ mark[3].status }} (<a id="view-remark-request-button" href="#">View</a>)</p>
+                            <p>
+                                <span data-request-id="{{ mark[3].requestId }}">{{ mark[3].status }}</span>
+                                (<a class="view-remark-request-button" href="#"
+                                    data-request-id="{{ mark[3].requestId }}"
+                                    data-student-name="{{ mark[0].displayName }}"
+                                    data-evaluation-title="{{ mark[1].title }}" data-grade="{{ mark[2].grade }}"
+                                    data-max-grade="{{ mark[1].maxGrade }}" data-reason="{{ mark[3].reason }}"
+                                    data-status="{{ mark[3].status }}">View</a>)
+                            </p>
                             {% else %}
                             <p>N/A</p>
                             {% endif %}
@@ -72,6 +80,36 @@
                 <p>Welcome back, {{ session['userInfo']['displayName'] }}!</p>
                 <p>Click <a href="/grades/remark">here to view remark requests</a></p>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-backdrop hidden"></div>
+<div class="modal hidden" id="manage-regrade-modal">
+    <div class="container no-margin">
+        <div class="container-header">
+            <h2>Manage Regrade Request</h2>
+        </div>
+        <div class="container-content" style="padding-top:8px;">
+            <p><b>Student Name:</b> <span id="regrade-student-name"></span></p>
+            <p><b>Evaluation:</b> <span id="regrade-evaluation-title"></span></p>
+            <p><b>Grade:</b> <span id="regrade-grade"></span></p>
+            <p><b>Status:</b> <span id="regrade-status"></span></p>
+            <br />
+            <p><b>Reason for regrade:</b></p>
+            <p><span id="regrade-reason"></span></p>
+            <div style="display:flex;justify-content:space-between;margin-top:16px;">
+                <button class="modal-close-button button-secondary" class="button">Close</button>
+                <div style="display:flex;gap:8px;">
+                    <button class="button button-secondary manage-regrade-button" type="submit"
+                        data-status="Pending">Pending</button>
+                    <button class="button button-error manage-regrade-button" type="submit"
+                        data-status="Rejected">Reject</button>
+                    <button class="button button-success manage-regrade-button" type="submit"
+                        data-status="Approved">Approve</button>
+                </div>
+            </div>
+            <p id="regrade-message" class="hidden"></p>
         </div>
     </div>
 </div>

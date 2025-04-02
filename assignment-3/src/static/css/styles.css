@@ -312,6 +312,22 @@ button:disabled {
     transition: background-color 0.2s;
 }
 
+.button-error {
+    background-color: #d32f2f;
+}
+.button-error:hover {
+    background-color: #9f1b1b;
+    transition: background-color 0.2s;
+}
+
+.button-success {
+    background-color: #2e7d32;
+}
+.button-success:hover {
+    background-color: #1b5e20;
+    transition: background-color 0.2s;
+}
+
 input,
 select,
 textarea {
