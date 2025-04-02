@@ -12,8 +12,7 @@ $(document).ready(() => {
         $("#regrade-message").text("");
         $("#regrade-reason").val("");
         $("#regrade-submit-button").removeAttr("disabled");
-        $("#regrade-modal").fadeIn(duration = 200);
-        $(".modal-backdrop").fadeIn(duration = 200);
+        showModal("#regrade-modal");
     });
 
     const handleSubmitRegradeRequest = () => {
@@ -62,7 +61,7 @@ $(document).ready(() => {
         const studentFilter = $("#filter-student").val().toLowerCase().trim();
         const remarkStatusFilter = $("#remark-status").val();
 
-        $(".mark-group-row").each((_, element) => {
+        $(".mark-row").each((_, element) => {
             const row = $(element);
             const rowMarkGroupId = parseInt(row.data('mark-group-id')) || '';
             const rowStudentName = (row.data('student-name') || '').toLowerCase();
@@ -101,8 +100,7 @@ $(document).ready(() => {
         $("#regrade-status").text(viewRemarkData.status);
         $("#regrade-reason").text(viewRemarkData.reason);
         $("#regrade-message").text("");
-        $("#manage-regrade-modal").fadeIn(duration = 200);
-        $(".modal-backdrop").fadeIn(duration = 200);
+        showModal("#manage-regrade-modal");
     });
 
     const handleRegradeRequestManage = (e) => {
@@ -135,7 +133,7 @@ $(document).ready(() => {
                 $("#regrade-grade").text(gradeText);
                 $(`span[data-request-id="${viewRemarkId}"]`).text(status);
                 $(`span.grade[data-mark-id="${viewRemarkData.markId}"]`).text(gradeText);
-                $(`div.mark-group-row[data-mark-id="${viewRemarkData.markId}"]`).data('remark-status', status);
+                $(`div.mark-row[data-mark-id="${viewRemarkData.markId}"]`).data('remark-status', status);
                 $(`a[data-mark-id="${viewRemarkData.markId}"]`).data('grade', newGrade);
                 $(`button[data-mark-id="${viewRemarkData.markId}"]`).data('grade', newGrade);
                 $(`button[data-mark-id="${viewRemarkData.markId}"]`).data('status', status);
@@ -151,7 +149,7 @@ $(document).ready(() => {
     };
     $(".manage-regrade-button").on('click', handleRegradeRequestManage);
 
-    $(".edit-mark-button").on('click', (e) => {
+    const handleEditMarkButton = (e) => {
         const el = $(e.currentTarget);
         editMarkId = el.data('mark-id');
         editMarkData = {
@@ -166,9 +164,10 @@ $(document).ready(() => {
         $("#edit-grade").text(`${parseInt(editMarkData.grade * 100 / editMarkData.maxGrade)}% (${editMarkData.grade} / ${editMarkData.maxGrade})`);
         $("#edit-new-grade").val(editMarkData.grade);
         $("#edit-message").text("");
-        $("#edit-mark-modal").fadeIn(duration = 200);
-        $(".modal-backdrop").fadeIn(duration = 200);
-    });
+        showModal("#edit-mark-modal");
+    }
+    $("#grades-table").on('click', '.edit-mark-button', handleEditMarkButton);
+    // we need this to handle dynamically added buttons
 
     const handleEditMark = (e) => {
         const newGrade = $("#edit-new-grade").val();
@@ -207,12 +206,56 @@ $(document).ready(() => {
             }
         });
     };
-    $("#edit-submit-button").on('click', handleEditMark);
+    const handleDeleteMark = (e) => {
+        $("#edit-message").text("");
+        $("#edit-message").removeClass("error-message");
+        $("#edit-message").removeClass("success-message");
 
-    $("#enter-mark-button").on('click', (e) => {
+        if (!editMarkId) {
+            alert("Something went wrong... Please try again.");
+            return;
+        }
+
+        $.ajax({
+            type: "DELETE",
+            url: "/api/mark",
+            data: JSON.stringify({ markId: editMarkId }),
+            contentType: "application/json",
+            success: (data) => {
+                $("#edit-message").text(data.message);
+                $("#edit-message").addClass("success-message");
+                $("#edit-message").fadeIn();
+
+                $(`.mark-row[data-mark-id="${editMarkId}"]`).remove();
+                handleMarkFilter();
+            },
+            error: (error) => {
+                const data = JSON.parse(error.responseText);
+                $("#edit-message").text(data.error);
+                $("#edit-message").addClass("error-message");
+                $("#edit-message").fadeIn();
+            }
+        });
+    };
+    $("#edit-submit-button").on('click', handleEditMark);
+    $("#edit-delete-button").on('click', () => {
+        if ($("#edit-delete-button").text === "Delete") {
+            $("#edit-delete-button").text("Confirm?");
+            $("#edit-delete-button").attr("disabled", "disabled");
+            setTimeout(() => {
+                $("#edit-delete-button").removeAttr("disabled");
+            }, 1500);
+        } else {
+            handleDeleteMark();
+        }
+    });
+
+    $(".enter-mark-button").on('click', (e) => {
         $("#enter-mark-message").text("");
-        $("#enter-mark-modal").fadeIn(duration = 200);
-        $(".modal-backdrop").fadeIn(duration = 200);
+        $("#enter-mark-group-id").val("");
+        $("#enter-mark-student-id").val("");
+        $("#enter-mark-mark").val("");
+        showModal("#enter-mark-modal");
     });
 
     const handleEnterMark = () => {
@@ -249,7 +292,7 @@ $(document).ready(() => {
                 $("#enter-mark-mark").val("");
                 const gradeText = `${parseInt(mark * 100 / maxGrade)}% (${mark} / ${maxGrade})`;
                 const newRow = `
-                    <div class="table-row mark-group-row" data-mark-group-id="${markGroupId}"
+                    <div class="table-row mark-row" data-mark-group-id="${markGroupId}"
                         data-student-name="${studentName}" data-student-id="${studentId}">
                         <div class="table-cell">
                             <h3>${evaluationTitle}</h3>
@@ -271,6 +314,7 @@ $(document).ready(() => {
                         </div>
                     </div>`;
                 $("#grades-table").append(newRow);
+                handleMarkFilter();
             },
             error: (error) => {
                 const data = JSON.parse(error.responseText);

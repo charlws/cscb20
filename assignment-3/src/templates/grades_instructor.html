@@ -13,8 +13,9 @@
 <div class="main-container flex-container">
     <div class="flex-left">
         <div class="container">
-            <div class="container-header">
+            <div class="container-header space-between">
                 <h2>Student Marks</h2>
+                <button class="enter-mark-button button-secondary">Enter Mark</button>
             </div>
             <div class="container-content">
                 <div style="display:flex;justify-content:space-between;">
@@ -41,8 +42,9 @@
                     </div>
 
                     {% for mark in instructor_marks %}
-                    <div class="table-row mark-group-row" data-mark-group-id="{{ mark[1].groupId }}"
-                        data-student-name="{{ mark[0].displayName }}" data-student-id="{{ mark[0].studentId }}">
+                    <div class="table-row mark-row" data-mark-id="{{ mark[2].markId }}"
+                        data-mark-group-id="{{ mark[1].groupId }}" data-student-name="{{ mark[0].displayName }}"
+                        data-student-id="{{ mark[0].studentId }}">
                         <div class="table-cell">
                             <h3>{{ mark[1].title }}</h3>
                         </div>
@@ -88,15 +90,10 @@
             <div class="container-content">
                 <p>Welcome back, {{ session['userInfo']['displayName'] }}!</p>
                 <p>To view ALL remark requests, please <a href="/grades/remark">click here</a>.</p>
+                <p>To enter new mark records, please <a href="#" class="enter-mark-button">click here</a>.</p>
                 <p>ProTip: You can filter the student and evaluation on the left, and manage the regrade requests if
                     applicable.</p>
-                <hr />
-                <p>More actions:</p>
-                <div class="flex">
-                    <button id="enter-mark-button">Enter Mark</button>
-                    <button id="create-evaluation-button">Create Evaluation</button>
-                    <button id="delete-evaluation-button" class="button-error">Delete Evaluation</button>
-                </div>
+                <p style="font-size:12px;margin-top:8px;">*Note: If you looked at our database schema, we used a MarkGroup table to identify the evaluation a mark belongs to. Currently, the records in MarkGroup is hard-coded and we decided to not provide a client-side functionality to create a MarkGroup because we are close to the submission deadline and are not planning to add even more out-of-scope functionalities.</p>
             </div>
         </div>
     </div>

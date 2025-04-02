@@ -20,8 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
 $(document).ready(() => {
     const handleModalClose = () => {
-        $(".modal").fadeOut();
-        $(".modal-backdrop").fadeOut();
+        const scrollY = parseInt($("body").css('top'));
+        $("body").css({
+            'position': '',
+            'top': '',
+            'left': '',
+            'right': ''
+        });
+        window.scrollTo(0, -scrollY);
+        $(".modal").fadeOut(duration = 200);
+        $(".modal-backdrop").fadeOut(duration = 200);
     };
     $(".modal-backdrop,.modal-close-button").on('click', handleModalClose);
     $(document).on('keydown', (e) => {
@@ -30,3 +38,15 @@ $(document).ready(() => {
         }
     });
 });
+
+const showModal = (modalSelector) => {
+    const scrollY = window.scrollY;
+    $("body").css({
+        'position': 'fixed',
+        'top': `-${scrollY}px`,
+        'left': '0',
+        'right': '0'
+    });
+    $(modalSelector).fadeIn(duration = 200);
+    $(".modal-backdrop").fadeIn(duration = 200);
+};

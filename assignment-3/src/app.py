@@ -46,8 +46,8 @@ class MarkGroup(db.Model):
 class Mark(db.Model):
     __tablename__ = 'marks'
     markId = db.Column(db.Integer, primary_key=True)
-    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
-    markGroupId = db.Column(db.Integer, db.ForeignKey('markGroups.groupId'), nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey('users.userId', ondelete='CASCADE'), nullable=False)
+    markGroupId = db.Column(db.Integer, db.ForeignKey('markGroups.groupId', ondelete='CASCADE'), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
     updatedAt = db.Column(db.Integer, nullable=False)
 
@@ -59,9 +59,9 @@ class Mark(db.Model):
 class RemarkRequest(db.Model):
     __tablename__ = 'remarkRequests'
     requestId = db.Column(db.Integer, primary_key=True)
-    userId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
-    markGroupId = db.Column(db.Integer, db.ForeignKey('markGroups.groupId'), nullable=False)
-    markId = db.Column(db.Integer, db.ForeignKey('marks.markId'), nullable=False)
+    userId = db.Column(db.Integer, db.ForeignKey('users.userId', ondelete='CASCADE'), nullable=False)
+    markGroupId = db.Column(db.Integer, db.ForeignKey('markGroups.groupId', ondelete='CASCADE'), nullable=False)
+    markId = db.Column(db.Integer, db.ForeignKey('marks.markId', ondelete='CASCADE'), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
     reason = db.Column(db.Text, nullable=False)
     status = db.Column(db.String(10), nullable=False) # Pending / Approved / Rejected
@@ -74,7 +74,7 @@ class RemarkRequest(db.Model):
 class AnonymousFeedback(db.Model):
     __tablename__ = 'anonymousFeedback'
     feedbackId = db.Column(db.Integer, primary_key=True)
-    instructorId = db.Column(db.Integer, db.ForeignKey('users.userId'), nullable=False)
+    instructorId = db.Column(db.Integer, db.ForeignKey('users.userId', ondelete='CASCADE'), nullable=False)
     jsonFeedback = db.Column(db.Text, nullable=False)
     createdAt = db.Column(db.Integer, nullable=False)
 
@@ -289,7 +289,7 @@ def api_mark():
             return {'error': 'Mark already exists for this student'}, 400
 
         markObj = Mark(userId=data['userId'], markGroupId=data['markGroupId'], grade=data['grade'], updatedAt=int(time.time()))
-                
+
         db.session.add(markObj)
         db.session.commit()
         return {'message': 'Mark added successfully', 'markId': markObj.markId}, 201

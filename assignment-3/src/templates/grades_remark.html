@@ -51,7 +51,7 @@
 
                 {% for mark in instructor_marks %}
                 {% if mark[3] %}
-                <div class="table-row mark-group-row" data-mark-id="{{ mark[2].markId }}"
+                <div class="table-row mark-row" data-mark-id="{{ mark[2].markId }}"
                     data-mark-group-id="{{ mark[1].groupId }}" data-student-name="{{ mark[0].displayName }}"
                     data-student-id="{{ mark[0].studentId }}" data-remark-status="{{ mark[3].status }}">
                     <div class="table-cell">
