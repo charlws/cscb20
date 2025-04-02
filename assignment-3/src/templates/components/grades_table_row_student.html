@@ -1,0 +1,21 @@
+{% macro grades_table_row_student(mark, current_time) %}
+<div class="table-row">
+    <div class="table-cell">{{ mark[1].title }}</div>
+    {% if mark[1].releasedAt <= current_time %}
+        <div class="table-cell">{{ 100 * mark[0].grade // mark[1].maxGrade }}% ({{ mark[0].grade }}/{{ mark[1].maxGrade }})</div>
+    {% endif %}
+    <div class="table-cell">
+        {% if not mark[2] and mark[1].releasedAt <= current_time %}
+        <button class="regrade-button" data-mark-id="{{ mark[0].markId }}" data-mark-group-title="{{ mark[1].title }}">Request</button>
+        {% elif mark[2] and mark[2].status == 'Pending' %}
+        <span class="muted">Requested (Pending)</span>
+        {% elif mark[2] and mark[2].status == 'Approved' %}
+        <span class="success-message">Approved</span>
+        {% elif mark[2] and mark[2].status == 'Rejected' %}
+        <span class="error-message">Rejected</span>
+        {% else %}
+        <span class="muted">Not released yet</span>
+        {% endif %}
+    </div>
+</div>
+{% endmacro %}

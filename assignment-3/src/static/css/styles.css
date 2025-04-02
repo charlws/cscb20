@@ -259,6 +259,11 @@ footer p {
     margin: 0;
 }
 
+.no-animation {
+    animation: none;
+    opacity: 1;
+}
+
 .container-header {
     background-color: #1E3866;
     color: white;

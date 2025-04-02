@@ -10,8 +10,8 @@ $(document).ready(() => {
         $("#regrade-message").text("");
         $("#regrade-reason").val("");
         $("#regrade-submit-button").removeAttr("disabled");
-        $("#regrade-modal").fadeIn();
-        $(".modal-backdrop").fadeIn();
+        $("#regrade-modal").fadeIn(duration=200);
+        $(".modal-backdrop").fadeIn(duration=200);
     });
 
     const handleSubmitRegradeRequest = () => {
@@ -93,8 +93,8 @@ $(document).ready(() => {
         $("#regrade-grade").text(`${parseInt(viewRemarkData.grade * 100 / viewRemarkData.maxGrade)}% (${viewRemarkData.grade} / ${viewRemarkData.maxGrade})`);
         $("#regrade-status").text(viewRemarkData.status);
         $("#regrade-reason").text(viewRemarkData.reason);
-        $("#manage-regrade-modal").fadeIn();
-        $(".modal-backdrop").fadeIn();
+        $("#manage-regrade-modal").fadeIn(duration=200);
+        $(".modal-backdrop").fadeIn(duration=200);
     });
 
     const handleRegradeRequestManage = (e) => {
