@@ -1,38 +1,43 @@
 {% extends "base.html" %}
-{% from 'components/modal_manage_feedback.html' import modal_manage_feedback %}
-{% block title %} Feedback received {% endblock %}
+{% from 'components/modal_view_feedback.html' import modal_view_feedback %}
+
+{% block title %} Feedback {% endblock %}
+
 {% block head %}
-<script src="{{ url_for('static', filename='js/feedback-received.js') }}"></script>
+<script src="{{ url_for('static', filename='js/feedback.js') }}"></script>
 {% endblock %}
+
 {% block content %}
 <div class="main-container">
     <div class="container">
-        <div class="container-header space-between">
+        <div class="container-header">
             <h2>Feedback Received</h2>
-            <p><a href="/" class="no-decoration">Return to Dashboard</a></p>
         </div>
         <div class="container-content">
             <div class="feedback-table">
                 <div class="table-header">
-                    <div class="header-cell">Feedback</div>
+                    <div class="header-cell">Submitted At</div>
                     <div class="header-cell">Status</div>
-                    <div class="header-cell">Manage</div>
+                    <div class="header-cell">Action</div>
                 </div>
 
                 {% for feedback in feedback_list %}
                 <div class="table-row feedback-row" data-feedback-id="{{ feedback.feedbackId }}"
                     data-status="{{ feedback.status }}">
                     <div class="table-cell">
-                        <p class="truncate-text">{{ feedback.jsonFeedback }}</p>
+                        <p class="{{ 'muted' if feedback.status == 'Read' else '' }}">{{ feedback.createdAt }}</p>
                     </div>
-                    <div class="table-cell">
-                        <p>{{ feedback.status }}</p>
+                    <div class="table-cell feedback-status-cell">
+                        <p class="{{ 'muted' if feedback.status == 'Read' else '' }}">{{ feedback.status }}</p>
                     </div>
-                    <div class="table-cell">
+                    <div class="table-cell" style="display:flex;gap:8px;">
                         <button class="view-feedback-button" data-feedback-id="{{ feedback.feedbackId }}"
-                            data-feedback="{{ feedback.jsonFeedback }}" data-status="{{ feedback.status }}">
+                            data-feedback-created-at="{{ feedback.createdAt }}"
+                            data-feedback-json="{{ feedback.jsonFeedback }}" data-status="{{ feedback.status }}">
                             View
                         </button>
+                        <button data-feedback-id="{{ feedback.feedbackId }}" class="button button-error feedback-status-button" data-status="Unread">Mark as unread</button>
+                        <button data-feedback-id="{{ feedback.feedbackId }}" class="button button-success feedback-status-button" data-status="Read">Mark as read</button>
                     </div>
                 </div>
                 {% endfor %}
@@ -41,4 +46,5 @@
     </div>
 </div>
 
+{{ modal_view_feedback() }}
 {% endblock %}

@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS remarkRequests (requestId INTEGER PRIMARY KEY AUTOINC
         markId INTEGER NOT NULL,
         grade INTEGER NOT NULL, -- user's grade on request submission
         reason TEXT NOT NULL,
-        status CHAR(1) NOT NULL, -- P: pending, A: accepted, R: rejected
+        status CHAR(10) NOT NULL, -- Pending, Approved, Rejected
         createdAt INTEGER NOT NULL,
         updatedAt INTEGER NOT NULL,
         FOREIGN KEY (userId) REFERENCES users(userId),
@@ -43,5 +43,5 @@ CREATE TABLE IF NOT EXISTS anonymousFeedback (feedbackId INTEGER PRIMARY KEY AUT
         instructorId INTEGER NOT NULL, -- userId of instructor
         jsonFeedback TEXT NOT NULL, -- the qa form (we use json rather than separate questions)
         createdAt INTEGER NOT NULL,
-        status CHAR(1) NOT NULL,  -- R: read, U: Unread
+        status CHAR(10) NOT NULL,  -- Read, Unread
         FOREIGN KEY (instructorId) REFERENCES users(userId));

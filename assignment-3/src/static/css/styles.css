@@ -496,3 +496,12 @@ label {
         width: calc(100% - 32px);
     }
 }
+
+.feedback-question {
+    margin-bottom: 4px;
+}
+
+.feedback-answer {
+    margin-top: 4px;
+    margin-bottom: 8px;
+}

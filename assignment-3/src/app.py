@@ -1,7 +1,8 @@
+import base64
 import os
 import time
 
-from flask import Flask, render_template, session, request, redirect, url_for
+from flask import Flask, redirect, render_template, request, session, url_for
 from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
 
@@ -11,6 +12,8 @@ bcrypt = Bcrypt(app)
 app.config['SECRET_KEY']='94a86159af9971e2f7978bed5d3ddd2992609807e6e45cb503f096a633a8c81b'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(os.path.dirname(os.path.dirname(__file__)), 'assignment3.db')
 db = SQLAlchemy(app)
+
+TIMEZONE_OFFSET = -4 * 3600 # EDT
 
 class User(db.Model):
     __tablename__ = 'users'
@@ -76,7 +79,9 @@ class AnonymousFeedback(db.Model):
     feedbackId = db.Column(db.Integer, primary_key=True)
     instructorId = db.Column(db.Integer, db.ForeignKey('users.userId', ondelete='CASCADE'), nullable=False)
     jsonFeedback = db.Column(db.Text, nullable=False)
+    status = db.Column(db.String(10), nullable=False) # Unread / Read
     createdAt = db.Column(db.Integer, nullable=False)
+    updatedAt = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
         return f"AnonymousFeedback({self.feedbackId}, {self.instructorId})"
@@ -163,19 +168,20 @@ def anonymous_feedback():
     if 'userId' not in session:
         return redirect(url_for('login', message="Please login to use the anonymous feedback."))
     
-    allInstructors = User.query.filter_by(accountType='ins').all()
-
-    return render_template('anonymous_feedback.html', all_instructors = allInstructors)
-
-@app.route('/feedback-received')
-def feedback_recieved():
-    if 'userId' not in session:
-        return redirect(url_for('login', message="Please login to use the anonymous feedback."))
-    if session.get('userInfo', {}).get('accountType') == 'ins':
+    if session.get('userInfo', {}).get('accountType') == 'stu':
+        allInstructors = User.query.filter_by(accountType='ins').all()
+        return render_template('anonymous_feedback.html', all_instructors = allInstructors)
+    
+    else:
         instructor_id = session['userInfo']['userId']
         feedback_list = AnonymousFeedback.query.filter_by(instructorId=instructor_id).all()
+        for feedback in feedback_list:
+            # we have to process some data
+            # this is not ideal approach because this makes data format inconsistent
+            feedback.jsonFeedback = base64.b64encode(feedback.jsonFeedback.encode()).decode('utf-8')
+            feedback.createdAt = time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(feedback.createdAt + TIMEZONE_OFFSET))
         return render_template('feedback_received.html', feedback_list=feedback_list)
-    
+
 @app.route('/course-team')
 def course_team():
     if 'userId' not in session:
@@ -324,7 +330,7 @@ def api_mark():
         db.session.commit()
         return {'message': 'Marks updated successfully'}, 200
 
-@app.route('/api/feedback', methods=['PUT'])
+@app.route('/api/feedback', methods=['PUT', 'PATCH'])
 def api_feedback():
     data = request.json
 
@@ -346,7 +352,6 @@ def api_feedback():
         return {'message': 'Feedback submitted successfully'}, 201
 
     elif request.method == 'PATCH':
-        # Instructor updating feedback status
         if session['userInfo']['accountType'] != 'ins':
             return {'error': 'Only instructors can update feedback status'}, 403
         
@@ -355,7 +360,7 @@ def api_feedback():
             return {'error': 'Invalid feedback ID'}, 400
         
         newStatus = data['status']
-        if newStatus not in ['Read', 'Unread']:  # Add more statuses if needed
+        if newStatus not in ['Read', 'Unread']:
             return {'error': 'Invalid status'}, 400
         
         feedback.status = newStatus
