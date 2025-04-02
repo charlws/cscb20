@@ -18,10 +18,10 @@ Home
             </div>
             <div class="container-content">
                 {% if session['userInfo']['accountType'] == 'stu' %}
-                    <p>You can <a href="/grades">View your grades</a> | <a href="/anonymous-feedback">Submit Anonymous Feedback</a> | <a href="#" id="logout-button">Logout</a></p>
+                    <p>You can <a href="/grades">View Grades</a> | <a href="/anonymous-feedback">Submit Anonymous Feedback</a> | <a href="#" id="logout-button">Logout</a></p>
                     <p>You may also submit a regrade request in the grading page.</p>
                 {% elif session['userInfo']['accountType'] == 'ins' %}
-                    <p>You can <a href="/grades">Manage grades & remark requests</a> | <a href="/anonymous-feedback/view">View Anonymous Feedback</a> | <a href="#" id="logout-button">Logout</a></p>
+                    <p>You can <a href="/grades">Manage Grades & Remark Requests</a> | <a href="/anonymous-feedback/view">View Anonymous Feedback</a> | <a href="#" id="logout-button">Logout</a></p>
                 {% endif %}
             </div>
         </div>
