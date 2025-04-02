@@ -64,7 +64,7 @@ class RemarkRequest(db.Model):
     markId = db.Column(db.Integer, db.ForeignKey('marks.markId'), nullable=False)
     grade = db.Column(db.Integer, nullable=False)
     reason = db.Column(db.Text, nullable=False)
-    status = db.Column(db.String(10), nullable=False) # Pending / Processed
+    status = db.Column(db.String(10), nullable=False) # Pending / Approved / Rejected
     createdAt = db.Column(db.Integer, nullable=False)
     updatedAt = db.Column(db.Integer, nullable=False)
 
@@ -206,25 +206,46 @@ def api_logout():
     session.pop('userInfo', None)
     return {'message': 'Logout successful'}, 200
 
-@app.route('/api/regrade-request', methods=['PUT'])
+@app.route('/api/regrade-request', methods=['PUT', 'PATCH'])
 def api_regrade_request():
     data = request.json
 
     if not session.get('userId'):
         return {'error': 'User not logged in'}, 401
 
-    markObj = Mark.query.filter_by(markId=data['markId']).first()
-    if not markObj:
-        return {'error': 'Invalid mark ID'}, 400
-    existingRemarkRequest = RemarkRequest.query.filter_by(markId=data['markId'], userId=session['userId']).first()
-    if existingRemarkRequest:
-        return {'error': 'Regrade request already submitted'}, 400
+    if request.method == 'PUT':
+        if session['userInfo']['accountType'] != 'stu':
+            return {'error': 'Only students can submit regrade requests'}, 403
+
+        markObj = Mark.query.filter_by(markId=data['markId']).first()
+        if not markObj or markObj.userId != session['userId']:
+            return {'error': 'Invalid mark ID'}, 400
+        existingRemarkRequest = RemarkRequest.query.filter_by(markId=data['markId'], userId=session['userId']).first()
+        if existingRemarkRequest:
+            return {'error': 'Regrade request already submitted'}, 400
+        
+        remarkRequestObj = RemarkRequest(userId=session['userId'], markGroupId=markObj.markGroupId, markId=data['markId'], grade=markObj.grade, reason=data['reason'], status='Pending', createdAt=int(time.time()), updatedAt=int(time.time()))
+        
+        db.session.add(remarkRequestObj)
+        db.session.commit()
+        return {'message': 'Regrade request submitted successfully'}, 201
     
-    remarkRequestObj = RemarkRequest(userId=session['userId'], markGroupId=markObj.markGroupId, markId=data['markId'], grade=markObj.grade, reason=data['reason'], status='Pending', createdAt=int(time.time()), updatedAt=int(time.time()))
-    
-    db.session.add(remarkRequestObj)
-    db.session.commit()
-    return {'message': 'Regrade request submitted successfully'}, 201
+    elif request.method == 'PATCH':
+        if session['userInfo']['accountType'] != 'ins':
+            return {'error': 'Only instructors can process regrade requests'}, 403
+        
+        remarkRequest = RemarkRequest.query.filter_by(requestId=data['requestId']).first()
+        if not remarkRequest:
+            return {'error': 'Invalid remark request ID'}, 400
+        
+        newStatus = data['status']
+        if newStatus not in ['Pending', 'Approved', 'Rejected']:
+            return {'error': 'Invalid status'}, 400
+        
+        remarkRequest.status = newStatus
+        remarkRequest.updatedAt = int(time.time())
+        db.session.commit()
+        return {'message': 'Regrade request status updated successfully'}, 200
 
 @app.route('/api/feedback', methods=['PUT'])
 def api_feedback():
