@@ -58,22 +58,25 @@ $(document).ready(() => {
     const handleMarkFilter = () => {
         const selectedMarkGroupId = parseInt($("#mark-group-id").val()) || '';
         const studentFilter = $("#filter-student").val().toLowerCase().trim();
+        const remarkStatusFilter = $("#remark-status").val();
 
         $(".mark-group-row").each((_, element) => {
             const row = $(element);
             const rowMarkGroupId = parseInt(row.data('mark-group-id')) || '';
             const rowStudentName = (row.data('student-name') || '').toLowerCase();
             const rowStudentId = (String(row.data('student-id')) || '');
+            const rowRemarkStatus = (row.data('remark-status') || '');
 
             const markGroupMatches = !selectedMarkGroupId || selectedMarkGroupId === -1 || rowMarkGroupId === selectedMarkGroupId;
             const nameMatches = !studentFilter || rowStudentName.includes(studentFilter) || rowStudentId.includes(studentFilter);
-            console.log(`Mark group matches: ${markGroupMatches}, Name matches: ${nameMatches}`);
+            const remarkMatches = !remarkStatusFilter || remarkStatusFilter === "All" || rowRemarkStatus === remarkStatusFilter;
 
-            row.toggle(markGroupMatches && nameMatches);
+            row.toggle(markGroupMatches && nameMatches && remarkMatches);
         });
     };
     $("#mark-group-id").on('change', handleMarkFilter);
     $("#filter-student").on('input', handleMarkFilter);
+    $("#remark-status").on('input', handleMarkFilter);
     handleMarkFilter();
 
     $(".view-remark-request-button").on('click', (e) => {
@@ -129,6 +132,10 @@ $(document).ready(() => {
                 $("#regrade-grade").text(gradeText);
                 $(`span[data-request-id="${viewRemarkId}"]`).text(status);
                 $(`span.grade[data-mark-id="${viewRemarkData.markId}"]`).text(gradeText);
+                $(`div.mark-group-row[data-mark-id="${viewRemarkData.markId}"]`).data('remark-status', status);
+                $(`button[data-mark-id="${viewRemarkData.markId}"]`).data('grade', newGrade);
+                $(`button[data-mark-id="${viewRemarkData.markId}"]`).data('status', status);
+                handleMarkFilter();
             },
             error: (error) => {
                 const data = JSON.parse(error.responseText);

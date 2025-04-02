@@ -29,6 +29,14 @@ a:hover {
     color: #3a74a7;
 }
 
+.no-decoration {
+    color: white;
+    text-decoration: none;
+}
+.no-decoration:hover {
+    color: white;
+}
+
 header {
     position: fixed;
     top: 0;
@@ -262,6 +270,21 @@ footer p {
 .no-animation {
     animation: none;
     opacity: 1;
+}
+
+.space-between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.truncate-text {
+    line-clamp: 2;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    margin: 0;
 }
 
 .container-header {
