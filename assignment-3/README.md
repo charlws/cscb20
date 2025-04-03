@@ -37,7 +37,7 @@ This is only the *main* todos, i.e. it's not broken down to specific sub-feature
 
 - [x] Student Features
 
-- [ ] Instructor Features
+- [x] Instructor Features
 
 - Note: We may want to hard-code the data for markGroups (i.e. assignments/exams etc) in `app.py` (I used a database table for "generalization" purpose).  
   We may also want to add some dummy `marks` for the default students so they won't see "No marks available" when they login.
