@@ -2,7 +2,7 @@
 
 All assignments for CSCB20 at University of Toronto, Scarborough.
 
-Average assignment grading: 99.57 (97.32 / 97.39 / 104). Final grade: A+.
+Average assignment grade: 99.57 (97.32 / 97.39 / 104). Final grade: A+.
 
 You may see similar assignments if you take this course. You may use this repo for reference to understand what your assignments require. However, it is academic integrity offence and copyright infringement if you directly copy code from this reop.
 
